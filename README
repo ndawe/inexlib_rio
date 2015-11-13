@@ -2,6 +2,7 @@
  To build :
    cd ./inexlib/exlib/examples/cpp
    ./build -v
+  (./build -x # to have a full traceback).
 
  To run :
    ./bin_[gnu,clang,visual]/wroot
