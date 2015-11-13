@@ -8,7 +8,7 @@
  it produces a wroot.root file with histos and ntuples in it. To see the "keys" in it :
    ./bin_<compiler>/root_ls wroot.root
  To read it with inexlib :   
-   ./bin_<compiler>/rroot
+   ./bin_<compiler>/rroot wroot.root
 
  With CERN-ROOT around, you can do :
    <source setup CERN-ROOT>
