@@ -1,5 +1,5 @@
 #!/bin/sh -f
 
-mkdir bin
+mkdir -p bin
 g++ wroot.cpp -o bin/wroot -I../ -lz
 g++ rroot.cpp -o bin/rroot -I../ -lz

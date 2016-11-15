@@ -14,25 +14,18 @@
 
 #include <inlib/wroot/file>
 #include <inlib/wroot/to>
-
 #include <inlib/histo/h1d>
 #include <inlib/histo/h2d>
 #include <inlib/histo/h3d>
 #include <inlib/histo/p1d>
 #include <inlib/histo/p2d>
 #include <inlib/wroot/ntuple>
-
 #include <inlib/histo/h1df>
-
 #include <inlib/randd>
 #include <inlib/randf>
-
-#ifdef EXLIB_DONT_HAVE_ZLIB
-#else
 #include <inlib/zlib>
-#endif
-
 #include <inlib/args>
+
 #include <iostream>
 #include <cstdlib>
 
@@ -217,7 +210,7 @@ int main(int argc,char** argv) {
 
   inlib::rbwf rbwf(0,1);
   std::string stmp;
-  for(unsigned int count=0;count<entries;count++) {    
+  for(unsigned int count=0;count<entries;count++) {
     if(!col_index->fill(count)) {
       std::cout << "col_index fill failed." << std::endl;
       break;
@@ -273,7 +266,7 @@ int main(int argc,char** argv) {
 
     inlib::rbwf rbwf(0,1);
     std::string stmp;
-    for(unsigned int count=0;count<1000;count++) {    
+    for(unsigned int count=0;count<1000;count++) {
       if(!col_rgauss->fill(rg.shoot())) {
         std::cout << "col_rgauss fill failed." << std::endl;
         break;
@@ -307,7 +300,7 @@ int main(int argc,char** argv) {
   if(!rfile.write(n)) {
     std::cout << "file write failed." << std::endl;
   }}
-  
+
   rfile.close();
 
   //////////////////////////////////////////////////////////

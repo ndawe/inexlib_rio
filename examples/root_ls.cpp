@@ -1,7 +1,7 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-// It needs to be linked with csz/inflate.c 
+// It needs to be linked with csz/inflate.c
 // then this program is put in inlib.
 
 //inlib_build_use inlib csz inlib zlib
@@ -11,11 +11,7 @@
 #include <inlib/rroot/file>
 #include <inlib/rroot/streamers>
 #include <inlib/rroot/rall>
-
-#ifdef EXLIB_DONT_HAVE_ZLIB
-#else
 #include <inlib/zlib>
-#endif
 
 #include <iostream>
 #include <cstdlib>
@@ -67,7 +63,7 @@ int main(int argc,char** argv) {
     if(ls||dump) inlib::rroot::read(std::cout,rfile,keys,true,ls,dump,0);
     if(sinfos) inlib::rroot::read_sinfos(rfile);
   }
-  
+
 #ifdef INLIB_MEM
   }inlib::mem::balance(std::cout);
 #endif //INLIB_MEM

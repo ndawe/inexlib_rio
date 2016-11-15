@@ -4,20 +4,13 @@
 //inlib_build_use inlib inlib csz zlib
 
 #include <inlib/mem>
-
 #include <inlib/args>
 #include <inlib/fileis>
-
 #include <inlib/rroot/file>
 #include <inlib/rroot/rall>
-
 #include <inlib/rroot/ntuple>
 #include <inlib/ntuple_binding>
-
-#ifdef EXLIB_DONT_HAVE_ZLIB
-#else
 #include <inlib/zlib>
-#endif
 
 #include <iostream>
 #include <cstdlib>
@@ -56,7 +49,7 @@ int main(int argc,char** argv) {
   if(ls) {
     std::cout << "format version " << rfile.version() << std::endl;
   }
-      
+
   const std::vector<inlib::rroot::key*>& keys = rfile.dir().keys();
   inlib::rroot::read(std::cout,rfile,keys,true,ls,dump,0);
 
@@ -141,7 +134,7 @@ int main(int argc,char** argv) {
         delete h;
       }
     }}
-    delete dir; 
+    delete dir;
   }}
   // read an ntuple :
  {inlib::rroot::key* key = rfile.dir().find_key("rg_rbw");
