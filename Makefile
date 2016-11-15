@@ -1,5 +1,7 @@
 .PHONY: examples
 
+default: examples
+
 clean:
 	rm -rf examples/bin
 
