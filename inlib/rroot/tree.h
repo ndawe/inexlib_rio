@@ -4,9 +4,9 @@
 #ifndef inlib_rroot_tree
 #define inlib_rroot_tree
 
-#include "ifac"
-#include "branch_element"
-#include "../sout"
+#include "ifac.h"
+#include "branch_element.h"
+#include "../sout.h"
 
 namespace inlib {
     namespace rroot {

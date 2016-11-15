@@ -4,9 +4,9 @@
 #ifndef inlib_wroot_basket
 #define inlib_wroot_basket
 
-#include "ibo"
-#include "key"
-#include "buffer"
+#include "ibo.h"
+#include "key.h"
+#include "buffer.h"
 
 namespace inlib {
     namespace wroot {

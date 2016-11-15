@@ -4,14 +4,14 @@
 #ifndef inlib_rroot_fac
 #define inlib_rroot_fac
 
-#include "../sout"
+#include "../sout.h"
 
-#include "branch_element"
-#include "leaf"
-#include "basket"
-#include "tree_index"
-#include "stl_vector"
-#include "dummy"
+#include "branch_element.h"
+#include "leaf.h"
+#include "basket.h"
+#include "tree_index.h"
+#include "stl_vector.h"
+#include "dummy.h"
 
 namespace inlib {
     namespace rroot {

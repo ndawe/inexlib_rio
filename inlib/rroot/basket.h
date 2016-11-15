@@ -4,12 +4,12 @@
 #ifndef inlib_rroot_basket
 #define inlib_rroot_basket
 
-#include "iro"
-#include "key"
+#include "iro.h"
+#include "key.h"
 
-#include "../scast"
-#include "buffer"
-#include "cids"
+#include "../scast.h"
+#include "buffer.h"
+#include "cids.h"
 
 namespace inlib {
     namespace rroot {

@@ -12,7 +12,7 @@ namespace inlib {
     }
 }
 
-#include "../cid"
+#include "../cid.h"
 
 namespace inlib {
     namespace rroot {

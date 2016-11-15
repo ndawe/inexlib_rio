@@ -4,14 +4,14 @@
 //inlib_build_use inlib inlib zlib kernel
 
 #ifdef INLIB_MEM
-    #include <inlib/mem>
+    #include <inlib/mem.h>
 #endif
 
-#include <inlib/wroot/file>
-#include <inlib/wroot/tree>
-#include <inlib/randd>
-#include <inlib/randf>
-#include <inlib/zlib>
+#include <inlib/wroot/file.h>
+#include <inlib/wroot/tree.h>
+#include <inlib/randd.h>
+#include <inlib/randf.h>
+#include <inlib/zlib.h>
 
 #include <iostream>
 #include <cstdlib>

@@ -4,9 +4,9 @@
 #ifndef inlib_rroot_member_reader
 #define inlib_rroot_member_reader
 
-#include "../store/iobj_visitor"
+#include "../store/iobj_visitor.h"
 
-#include "buffer"
+#include "buffer.h"
 
 namespace inlib {
     namespace rroot {

@@ -4,18 +4,18 @@
 #ifndef inlib_wroot_directory
 #define inlib_wroot_directory
 
-#include "idir"
+#include "idir.h"
 
-#include "date"
-#include "key"
-#include "ifile"
-#include "date"
-#include "buffer"
-#include "iobject"
+#include "date.h"
+#include "key.h"
+#include "ifile.h"
+#include "date.h"
+#include "buffer.h"
+#include "iobject.h"
 
-#include "../strip"
-#include "../vmanip"
-#include "../forit"
+#include "../strip.h"
+#include "../vmanip.h"
+#include "../forit.h"
 
 #include <vector>
 #include <list>

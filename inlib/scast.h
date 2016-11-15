@@ -6,8 +6,8 @@
 
 // For implementations of cast methods.
 
-#include "safe_cast"
-#include "rcmp"
+#include "safe_cast.h"
+#include "rcmp.h"
 
 namespace inlib {
 

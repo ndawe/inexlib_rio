@@ -4,7 +4,7 @@
 #ifndef inlib_histo_h3
 #define inlib_histo_h3
 
-#include "b3"
+#include "b3.h"
 
 namespace inlib {
     namespace histo {

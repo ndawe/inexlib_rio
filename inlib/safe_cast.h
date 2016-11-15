@@ -4,7 +4,7 @@
 #ifndef inlib_safe_cast
 #define inlib_safe_cast
 
-#include "cid"
+#include "cid.h"
 
 namespace inlib {
 

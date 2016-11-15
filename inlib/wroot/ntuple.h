@@ -8,14 +8,14 @@
 // It inherits wroot::tree and each column is mapped
 // on a wroot::branch. Each add_row() does a tree::fill().
 
-#include "tree"
+#include "tree.h"
 
-#include "../vfind"
-#include "../vmanip"
-#include "../ntuple_booking"
-#include "../sout"
-#include "../scast"
-#include "../forit"
+#include "../vfind.h"
+#include "../vmanip.h"
+#include "../ntuple_booking.h"
+#include "../sout.h"
+#include "../scast.h"
+#include "../forit.h"
 
 namespace inlib {
     namespace wroot {

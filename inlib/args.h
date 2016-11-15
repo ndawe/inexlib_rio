@@ -4,12 +4,12 @@
 #ifndef inlib_args
 #define inlib_args
 
-#include "sout"
-#include "strip"
-#include "words"
-#include "sto"
-#include "forit"
-#include "mnmx"
+#include "sout.h"
+#include "strip.h"
+#include "words.h"
+#include "sto.h"
+#include "forit.h"
+#include "mnmx.h"
 
 #include <ostream>
 

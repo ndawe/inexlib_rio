@@ -4,9 +4,9 @@
 #ifndef inlib_rroot_leaf
 #define inlib_rroot_leaf
 
-#include "base_leaf"
-#include "../stype"
-#include "../cids"
+#include "base_leaf.h"
+#include "../stype.h"
+#include "../cids.h"
 
 namespace inlib {
     namespace rroot {

@@ -4,10 +4,10 @@
 #ifndef inlib_rroot_graph
 #define inlib_rroot_graph
 
-#include "../scast"
-#include "buffer"
+#include "../scast.h"
+#include "buffer.h"
 
-#include "cids"
+#include "cids.h"
 
 namespace inlib {
     namespace rroot {

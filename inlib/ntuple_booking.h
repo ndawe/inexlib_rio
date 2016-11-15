@@ -7,7 +7,7 @@
 // a little class to capture booking parameters
 // to create an ntuple.
 
-#include "cids"
+#include "cids.h"
 
 namespace inlib {
 

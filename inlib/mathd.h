@@ -62,6 +62,6 @@ namespace inlib {
 
 }
 
-//#include "power"
+//#include "power.h"
 
 #endif

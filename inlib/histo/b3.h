@@ -4,7 +4,7 @@
 #ifndef inlib_histo_b3
 #define inlib_histo_b3
 
-#include "base_histo"
+#include "base_histo.h"
 
 #include <ostream>
 

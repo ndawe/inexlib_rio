@@ -4,11 +4,11 @@
 #ifndef inlib_wroot_branch
 #define inlib_wroot_branch
 
-#include "leaf"
-#include "basket"
-#include "itree"
-#include "idir"
-#include "../forit"
+#include "leaf.h"
+#include "basket.h"
+#include "itree.h"
+#include "idir.h"
+#include "../forit.h"
 
 namespace inlib {
     namespace wroot {

@@ -4,7 +4,7 @@
 #ifndef inlib_rroot_cids
 #define inlib_rroot_cids
 
-#include "../cid"
+#include "../cid.h"
 
 namespace inlib {
     namespace rroot {

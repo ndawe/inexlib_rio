@@ -4,9 +4,9 @@
 #ifndef inlib_wroot_to
 #define inlib_wroot_to
 
-#include "directory"
-#include "streamers"
-#include "bufobj"
+#include "directory.h"
+#include "streamers.h"
+#include "bufobj.h"
 
 namespace inlib {
     namespace wroot {
@@ -182,8 +182,8 @@ namespace inlib {
     }
 }
 
-#include "member_writer"
-#include "../store/osc_streamers"
+#include "member_writer.h"
+#include "../store/osc_streamers.h"
 
 namespace inlib {
     namespace wroot {

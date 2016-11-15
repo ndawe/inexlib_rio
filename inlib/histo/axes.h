@@ -4,7 +4,7 @@
 #ifndef inlib_histo_axes
 #define inlib_histo_axes
 
-#include "axis"
+#include "axis.h"
 
 namespace inlib {
     namespace histo {

@@ -9,22 +9,22 @@
 // (and check !) the content of this file with CERN-ROOT.
 
 #ifdef INLIB_MEM
-    #include <inlib/mem>
+    #include <inlib/mem.h>
 #endif //INLIB_MEM
 
-#include <inlib/wroot/file>
-#include <inlib/wroot/to>
-#include <inlib/histo/h1d>
-#include <inlib/histo/h2d>
-#include <inlib/histo/h3d>
-#include <inlib/histo/p1d>
-#include <inlib/histo/p2d>
-#include <inlib/wroot/ntuple>
-#include <inlib/histo/h1df>
-#include <inlib/randd>
-#include <inlib/randf>
-#include <inlib/zlib>
-#include <inlib/args>
+#include <inlib/wroot/file.h>
+#include <inlib/wroot/to.h>
+#include <inlib/histo/h1d.h>
+#include <inlib/histo/h2d.h>
+#include <inlib/histo/h3d.h>
+#include <inlib/histo/p1d.h>
+#include <inlib/histo/p2d.h>
+#include <inlib/wroot/ntuple.h>
+#include <inlib/histo/h1df.h>
+#include <inlib/randd.h>
+#include <inlib/randf.h>
+#include <inlib/zlib.h>
+#include <inlib/args.h>
 
 #include <iostream>
 #include <cstdlib>

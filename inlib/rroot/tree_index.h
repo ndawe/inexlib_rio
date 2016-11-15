@@ -4,7 +4,7 @@
 #ifndef inlib_rroot_tree_index
 #define inlib_rroot_tree_index
 
-#include "named"
+#include "named.h"
 
 namespace inlib {
     namespace rroot {

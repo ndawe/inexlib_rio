@@ -4,9 +4,9 @@
 #ifndef inlib_wroot_member_writer
 #define inlib_wroot_member_writer
 
-#include "../store/iobj_const_visitor"
+#include "../store/iobj_const_visitor.h"
 
-#include "buffer"
+#include "buffer.h"
 
 namespace inlib {
     namespace wroot {

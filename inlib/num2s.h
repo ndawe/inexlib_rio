@@ -6,8 +6,8 @@
 
 // write numerics in a string as if done with a std::ostringstream::operator<<(<num>).
 
-#include "sprintf"
-#include "typedefs"
+#include "sprintf.h"
+#include "typedefs.h"
 
 namespace inlib {
 

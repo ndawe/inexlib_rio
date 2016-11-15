@@ -4,7 +4,7 @@
 #ifndef inlib_store_iobj_visitor
 #define inlib_store_iobj_visitor
 
-#include "../typedefs"
+#include "../typedefs.h"
 
 #include <string>
 #include <vector>

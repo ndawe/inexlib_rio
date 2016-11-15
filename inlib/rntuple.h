@@ -6,8 +6,8 @@
 
 // interfaces to read ntuple.
 
-#include "scast"
-#include "cids"
+#include "scast.h"
+#include "cids.h"
 
 #include <string>
 #include <vector>

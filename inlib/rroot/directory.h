@@ -4,12 +4,12 @@
 #ifndef inlib_rroot_directory
 #define inlib_rroot_directory
 
-#include "seek"
-#include "date"
-#include "key"
-#include "ifile"
-#include "../forit"
-#include "../vmanip"
+#include "seek.h"
+#include "date.h"
+#include "key.h"
+#include "ifile.h"
+#include "../forit.h"
+#include "../vmanip.h"
 
 namespace inlib {
     namespace rroot {

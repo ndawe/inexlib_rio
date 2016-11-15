@@ -3,14 +3,14 @@
 
 //inlib_build_use inlib inlib csz zlib
 
-#include <inlib/mem>
-#include <inlib/args>
-#include <inlib/fileis>
-#include <inlib/rroot/file>
-#include <inlib/rroot/rall>
-#include <inlib/rroot/ntuple>
-#include <inlib/ntuple_binding>
-#include <inlib/zlib>
+#include <inlib/mem.h>
+#include <inlib/args.h>
+#include <inlib/fileis.h>
+#include <inlib/rroot/file.h>
+#include <inlib/rroot/rall.h>
+#include <inlib/rroot/ntuple.h>
+#include <inlib/ntuple_binding.h>
+#include <inlib/zlib.h>
 
 #include <iostream>
 #include <cstdlib>

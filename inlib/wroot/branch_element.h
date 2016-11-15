@@ -4,8 +4,8 @@
 #ifndef inlib_wroot_branch_element
 #define inlib_wroot_branch_element
 
-#include "branch"
-#include "leaf"
+#include "branch.h"
+#include "leaf.h"
 
 namespace inlib {
     namespace wroot {

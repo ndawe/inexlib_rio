@@ -6,7 +6,7 @@
 
 //used in rroot leaf template.
 
-#include "typedefs"
+#include "typedefs.h"
 
 #include <string>
 

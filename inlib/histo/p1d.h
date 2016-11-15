@@ -4,7 +4,7 @@
 #ifndef inlib_histo_p1d
 #define inlib_histo_p1d
 
-#include "p1"
+#include "p1.h"
 
 namespace inlib {
     namespace histo {

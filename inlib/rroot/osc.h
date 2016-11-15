@@ -4,9 +4,9 @@
 #ifndef inlib_rroot_osc
 #define inlib_rroot_osc
 
-#include "named"
-#include "member_reader"
-#include "../store/osc_streamers"
+#include "named.h"
+#include "member_reader.h"
+#include "../store/osc_streamers.h"
 
 namespace inlib {
     namespace rroot {

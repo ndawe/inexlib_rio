@@ -4,12 +4,12 @@
 #ifndef inlib_rroot_buffer
 #define inlib_rroot_buffer
 
-#include "rbuf"
-#include "ifac"
-#include "iro"
-#include "../sout"
+#include "rbuf.h"
+#include "ifac.h"
+#include "iro.h"
+#include "../sout.h"
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
 #include <string>
@@ -29,11 +29,11 @@
     #include <map>
 #endif
 #ifdef INLIB_RROOT_OBJ_MAP_OMAP
-    #include "../omap"
+    #include "../omap.h"
 #endif
 #ifdef INLIB_RROOT_OBJ_MAP_HASH_TABLE
-    #include "../hash_table"
-    #include "../hash"
+    #include "../hash_table.h"
+    #include "../hash.h"
 #endif
 
 namespace inlib {

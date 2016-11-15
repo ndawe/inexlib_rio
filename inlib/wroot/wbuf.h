@@ -5,12 +5,12 @@
 #define inlib_wroot_wbuf
 
 #include <ostream>
-#include "../long_out"
-#include "../charp_out"
-#include "../stype"
+#include "../long_out.h"
+#include "../charp_out.h"
+#include "../stype.h"
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
 #include <cstring> //memcpy

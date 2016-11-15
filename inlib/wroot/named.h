@@ -4,9 +4,9 @@
 #ifndef inlib_wroot_named
 #define inlib_wroot_named
 
-#include "buffer"
-#include "../vmanip"
-//#include "../vdata"
+#include "buffer.h"
+#include "../vmanip.h"
+//#include "../vdata.h"
 
 namespace inlib {
     namespace wroot {

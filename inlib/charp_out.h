@@ -4,7 +4,7 @@
 #ifndef inlib_charp_out
 #define inlib_charp_out
 
-#include "snpf"
+#include "snpf.h"
 #include <string>
 
 namespace inlib {

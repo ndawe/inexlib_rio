@@ -4,10 +4,10 @@
 #ifndef inlib_cids
 #define inlib_cids
 
-#include "cid"
+#include "cid.h"
 
 #include <string>
-#include "typedefs" //byte
+#include "typedefs.h" //byte
 
 namespace inlib {
 

@@ -6,8 +6,8 @@
 
 // flat in ]0,1[ ???
 
-#include "rtausmeui"
-#include "S_STRING"
+#include "rtausmeui.h"
+#include "S_STRING.h"
 
 #include <cmath>
 

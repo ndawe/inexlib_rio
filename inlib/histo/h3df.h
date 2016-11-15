@@ -7,7 +7,7 @@
 // coord is in double.
 // weight is in float.
 
-#include "h3"
+#include "h3.h"
 
 namespace inlib {
     namespace histo {

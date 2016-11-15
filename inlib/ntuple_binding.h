@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include "forit"
+#include "forit.h"
 
 namespace inlib {
 

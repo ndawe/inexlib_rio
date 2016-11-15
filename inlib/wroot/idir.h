@@ -4,7 +4,7 @@
 #ifndef inlib_wroot_idir
 #define inlib_wroot_idir
 
-#include "seek"
+#include "seek.h"
 
 namespace inlib {
     namespace wroot {

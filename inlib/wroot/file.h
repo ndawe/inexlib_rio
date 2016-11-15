@@ -4,16 +4,16 @@
 #ifndef inlib_wroot_file
 #define inlib_wroot_file
 
-#include "ifile"
+#include "ifile.h"
 
-#include "directory"
+#include "directory.h"
 
-#include "infos"
-#include "free_seg"
+#include "infos.h"
+#include "free_seg.h"
 
-#include "../platform"
+#include "../platform.h"
 
-#include "../path"
+#include "../path.h"
 
 #include <map>
 

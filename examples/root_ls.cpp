@@ -6,12 +6,12 @@
 
 //inlib_build_use inlib csz inlib zlib
 
-#include <inlib/mem>
-#include <inlib/args>
-#include <inlib/rroot/file>
-#include <inlib/rroot/streamers>
-#include <inlib/rroot/rall>
-#include <inlib/zlib>
+#include <inlib/mem.h>
+#include <inlib/args.h>
+#include <inlib/rroot/file.h>
+#include <inlib/rroot/streamers.h>
+#include <inlib/rroot/rall.h>
+#include <inlib/zlib.h>
 
 #include <iostream>
 #include <cstdlib>

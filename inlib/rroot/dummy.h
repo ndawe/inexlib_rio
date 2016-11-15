@@ -10,11 +10,11 @@
 // from the file a class name which is unknown
 // from the tree factory.
 
-#include "iro"
+#include "iro.h"
 
-#include "buffer"
-#include "../scast"
-#include "cids"
+#include "buffer.h"
+#include "../scast.h"
+#include "cids.h"
 
 namespace inlib {
     namespace rroot {

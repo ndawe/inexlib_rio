@@ -4,8 +4,8 @@
 #ifndef inlib_wroot_ifile
 #define inlib_wroot_ifile
 
-#include "seek"
-#include "../press_func"
+#include "seek.h"
+#include "../press_func.h"
 
 namespace inlib {
     namespace wroot {

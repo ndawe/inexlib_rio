@@ -7,7 +7,7 @@
 #include <vector>
 #include <map> //for annotations
 
-#include "axes"
+#include "axes.h"
 
 namespace inlib {
     namespace histo {

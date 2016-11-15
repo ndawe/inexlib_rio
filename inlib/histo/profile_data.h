@@ -4,7 +4,7 @@
 #ifndef inlib_histo_profile_data
 #define inlib_histo_profile_data
 
-#include "histo_data"
+#include "histo_data.h"
 
 namespace inlib {
     namespace histo {

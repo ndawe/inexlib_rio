@@ -4,9 +4,9 @@
 #ifndef inlib_randT
 #define inlib_randT
 
-#include "cmathT"
+#include "cmathT.h"
 
-#include "mathd"
+#include "mathd.h"
 
 namespace inlib {
 

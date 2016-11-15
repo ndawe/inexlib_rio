@@ -6,19 +6,19 @@
 
 // to have same API than rcsv::ntuple.
 
-#include "../rntuple"
+#include "../rntuple.h"
 
-#include "tree"
-#include "leaf"
-#include "stl_vector"
+#include "tree.h"
+#include "leaf.h"
+#include "stl_vector.h"
 
-#include "../cids"
-#include "../vfind"
-#include "../vmanip"
-#include "../ntuple_binding"
+#include "../cids.h"
+#include "../vfind.h"
+#include "../vmanip.h"
+#include "../ntuple_binding.h"
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
 namespace inlib {

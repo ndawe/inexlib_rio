@@ -4,8 +4,8 @@
 #ifndef inlib_rtausmef
 #define inlib_rtausmef
 
-#include "rtausmeui"
-#include "S_STRING"
+#include "rtausmeui.h"
+#include "S_STRING.h"
 
 #include <cmath>
 

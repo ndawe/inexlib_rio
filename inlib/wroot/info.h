@@ -4,9 +4,9 @@
 #ifndef inlib_wroot_info
 #define inlib_wroot_info
 
-#include "buffer"
-#include "element"
-#include "named"
+#include "buffer.h"
+#include "element.h"
+#include "named.h"
 
 namespace inlib {
     namespace wroot {

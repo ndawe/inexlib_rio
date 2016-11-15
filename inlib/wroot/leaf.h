@@ -4,7 +4,7 @@
 #ifndef inlib_wroot_leaf
 #define inlib_wroot_leaf
 
-#include "base_leaf"
+#include "base_leaf.h"
 
 namespace inlib {
     namespace wroot {

@@ -4,19 +4,19 @@
 #ifndef inlib_store_osc_streamers
 #define inlib_store_osc_streamers
 
-#include "iobj_const_visitor"
-#include "iobj_visitor"
+#include "iobj_const_visitor.h"
+#include "iobj_visitor.h"
 
-#include "../histo/h1d"
-#include "../histo/h2d"
-#include "../histo/h3d"
-#include "../histo/p1d"
-#include "../histo/p2d"
-#include "../vmanip"
-#include "../sto"
-#include "../num2s"
-#include "../S_STRING"
-#include "../scast"
+#include "../histo/h1d.h"
+#include "../histo/h2d.h"
+#include "../histo/h3d.h"
+#include "../histo/p1d.h"
+#include "../histo/p2d.h"
+#include "../vmanip.h"
+#include "../sto.h"
+#include "../num2s.h"
+#include "../S_STRING.h"
+#include "../scast.h"
 
 namespace inlib {
     namespace osc {

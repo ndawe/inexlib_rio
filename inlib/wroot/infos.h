@@ -4,7 +4,7 @@
 #ifndef inlib_wroot_infos
 #define inlib_wroot_infos
 
-#include "info"
+#include "info.h"
 
 namespace inlib {
     namespace wroot {

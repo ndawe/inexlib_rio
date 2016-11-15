@@ -4,14 +4,14 @@
 #ifndef inlib_rroot_rall
 #define inlib_rroot_rall
 
-#include "streamers"
-#include "fac"
-#include "tree"
+#include "streamers.h"
+#include "fac.h"
+#include "tree.h"
 
 //#define INLIB_RROOT_NOT_OSC
 
 #ifndef INLIB_RROOT_NOT_OSC
-    #include "osc"
+    #include "osc.h"
 #endif
 
 namespace inlib {

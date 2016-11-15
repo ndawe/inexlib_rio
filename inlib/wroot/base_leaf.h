@@ -5,10 +5,10 @@
 #define inlib_wroot_base_leaf
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
-#include "named"
+#include "named.h"
 
 namespace inlib {
     namespace wroot {

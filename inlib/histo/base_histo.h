@@ -5,10 +5,10 @@
 #define inlib_histo_base_histo
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
-#include "histo_data"
+#include "histo_data.h"
 
 #include <cmath>
 #include <map> //for annotations

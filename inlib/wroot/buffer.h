@@ -6,15 +6,15 @@
 
 // class used for serializing objects.
 
-#include "wbuf"
-#include "ibo"
+#include "wbuf.h"
+#include "ibo.h"
 
-#include "../realloc"
-#include "../mnmx"
-#include "../forit"
+#include "../realloc.h"
+#include "../mnmx.h"
+#include "../forit.h"
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
 #include <string>

@@ -8,7 +8,7 @@
 // Definition of a file pointer .                                       //
 //////////////////////////////////////////////////////////////////////////
 
-#include "../typedefs"
+#include "../typedefs.h"
 
 namespace inlib {
     namespace wroot {

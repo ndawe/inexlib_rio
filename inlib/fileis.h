@@ -4,7 +4,7 @@
 #ifndef inlib_fileis
 #define inlib_fileis
 
-#include "signature"
+#include "signature.h"
 #include <cstring>
 
 namespace inlib {

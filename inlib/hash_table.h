@@ -5,7 +5,7 @@
 #define inlib_hash_table
 
 #ifdef INLIB_MEM
-    #include "mem"
+    #include "mem.h"
 #endif
 
 namespace inlib {

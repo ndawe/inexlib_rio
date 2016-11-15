@@ -4,7 +4,7 @@
 #ifndef inlib_long_out
 #define inlib_long_out
 
-#include "snpf"
+#include "snpf.h"
 #include <string>
 
 namespace inlib {

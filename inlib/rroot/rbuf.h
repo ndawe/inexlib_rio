@@ -4,12 +4,12 @@
 #ifndef inlib_rroot_rbuf
 #define inlib_rroot_rbuf
 
-#include "../stype"
-#include "../long_out"
-#include "../charp_out"
+#include "../stype.h"
+#include "../long_out.h"
+#include "../charp_out.h"
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
 #include <ostream>

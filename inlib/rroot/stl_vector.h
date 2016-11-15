@@ -4,12 +4,12 @@
 #ifndef inlib_rroot_stl_vector
 #define inlib_rroot_stl_vector
 
-#include "buffer"
-#include "cids"
+#include "buffer.h"
+#include "cids.h"
 
-#include "../stype"
-#include "../scast"
-#include "../cids"
+#include "../stype.h"
+#include "../scast.h"
+#include "../cids.h"
 
 namespace inlib {
     namespace rroot {

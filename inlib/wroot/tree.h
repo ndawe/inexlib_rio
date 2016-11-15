@@ -4,10 +4,10 @@
 #ifndef inlib_wroot_tree
 #define inlib_wroot_tree
 
-#include "itree"
-#include "iobject"
+#include "itree.h"
+#include "iobject.h"
 
-#include "branch_element"
+#include "branch_element.h"
 
 namespace inlib {
     namespace wroot {

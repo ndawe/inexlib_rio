@@ -4,11 +4,11 @@
 #ifndef inlib_rroot_file
 #define inlib_rroot_file
 
-#include "ifile"
+#include "ifile.h"
 
-#include "directory"
+#include "directory.h"
 
-#include "../platform"
+#include "../platform.h"
 
 #include <string>
 #include <fcntl.h>

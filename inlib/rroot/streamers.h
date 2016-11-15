@@ -4,29 +4,29 @@
 #ifndef inlib_rroot_streamers
 #define inlib_rroot_streamers
 
-#include "named"
-#include "date"
-#include "directory"
-#include "graph"
-#include "clss"
-#include "info"
-#include "dummy"
+#include "named.h"
+#include "date.h"
+#include "directory.h"
+#include "graph.h"
+#include "clss.h"
+#include "info.h"
+#include "dummy.h"
 
-#include "../sout"
-#include "../vmanip"
+#include "../sout.h"
+#include "../vmanip.h"
 
-//#include "../histo/histo_data"
-#include "../histo/profile_data"
+//#include "../histo/histo_data.h"
+#include "../histo/profile_data.h"
 
-#include "../histo/h1d"
-#include "../histo/h2d"
-#include "../histo/h3d"
-#include "../histo/p1d"
-#include "../histo/p2d"
+#include "../histo/h1d.h"
+#include "../histo/h2d.h"
+#include "../histo/h3d.h"
+#include "../histo/p1d.h"
+#include "../histo/p2d.h"
 
 #include <list>
 #include <cmath> //::log10, ::fabs.
-//#include "../rtausmed"
+//#include "../rtausmed.h"
 
 namespace inlib {
     namespace rroot {

@@ -4,8 +4,8 @@
 #ifndef inlib_histo_p2
 #define inlib_histo_p2
 
-#include "b2"
-#include "profile_data"
+#include "b2.h"
+#include "profile_data.h"
 
 namespace inlib {
     namespace histo {

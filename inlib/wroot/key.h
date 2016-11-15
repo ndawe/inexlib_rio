@@ -4,14 +4,14 @@
 #ifndef inlib_wroot_key
 #define inlib_wroot_key
 
-#include "seek"
-#include "date"
-#include "ifile"
-#include "wbuf"
-#include "../sout"
+#include "seek.h"
+#include "date.h"
+#include "ifile.h"
+#include "wbuf.h"
+#include "../sout.h"
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
 #include <ostream>

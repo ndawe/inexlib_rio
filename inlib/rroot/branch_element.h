@@ -4,7 +4,7 @@
 #ifndef inlib_rroot_branch_element
 #define inlib_rroot_branch_element
 
-#include "branch"
+#include "branch.h"
 
 namespace inlib {
     namespace rroot {

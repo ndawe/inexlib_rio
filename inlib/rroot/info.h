@@ -4,9 +4,9 @@
 #ifndef inlib_rroot_info
 #define inlib_rroot_info
 
-//#include "buffer"
-//#include "element"
-#include "named"
+//#include "buffer.h"
+//#include "element.h"
+#include "named.h"
 
 namespace inlib {
     namespace rroot {

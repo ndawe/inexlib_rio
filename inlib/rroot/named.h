@@ -4,13 +4,13 @@
 #ifndef inlib_rroot_named
 #define inlib_rroot_named
 
-#include "buffer"
-#include "../vdata"
-#include "../vmanip"
-#include "../forit"
-#include "../scast" //for ObjArray
+#include "buffer.h"
+#include "../vdata.h"
+#include "../vmanip.h"
+#include "../forit.h"
+#include "../scast.h" //for ObjArray
 
-#include "cids"
+#include "cids.h"
 
 namespace inlib {
     namespace rroot {

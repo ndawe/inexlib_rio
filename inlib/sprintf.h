@@ -5,7 +5,7 @@
 #define inlib_sprintf
 
 #include <string>
-#include "snpf"
+#include "snpf.h"
 
 namespace inlib {
 

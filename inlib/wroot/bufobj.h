@@ -4,8 +4,8 @@
 #ifndef inlib_wroot_bufobj
 #define inlib_wroot_bufobj
 
-#include "iobject"
-#include "buffer"
+#include "iobject.h"
+#include "buffer.h"
 
 namespace inlib {
     namespace wroot {

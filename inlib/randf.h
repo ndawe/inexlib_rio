@@ -4,8 +4,8 @@
 #ifndef inlib_randf
 #define inlib_randf
 
-#include "randT"
-#include "rtausmef"
+#include "randT.h"
+#include "rtausmef.h"
 
 namespace inlib {
 

@@ -8,7 +8,7 @@
 
 #include <vector>
 
-#include "binary_search"
+#include "binary_search.h"
 
 namespace inlib {
 

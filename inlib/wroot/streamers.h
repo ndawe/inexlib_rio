@@ -4,21 +4,21 @@
 #ifndef inlib_wroot_streamers
 #define inlib_wroot_streamers
 
-#include "named"
-#include "date"
-#include "directory"
-#include "file"
-#include "../vmanip" //convert
+#include "named.h"
+#include "date.h"
+#include "directory.h"
+#include "file.h"
+#include "../vmanip.h" //convert
 
-#include "../histo/h1d"
-#include "../histo/h2d"
-#include "../histo/h3d"
-#include "../histo/p1d"
-#include "../histo/p2d"
+#include "../histo/h1d.h"
+#include "../histo/h2d.h"
+#include "../histo/h3d.h"
+#include "../histo/p1d.h"
+#include "../histo/p2d.h"
 
-#include "../histo/h1df"
-#include "../histo/h2df"
-#include "../histo/h3df"
+#include "../histo/h1df.h"
+#include "../histo/h2df.h"
+#include "../histo/h3df.h"
 
 namespace inlib {
     namespace wroot {

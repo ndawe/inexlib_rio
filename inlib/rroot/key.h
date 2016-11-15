@@ -4,14 +4,14 @@
 #ifndef inlib_rroot_key
 #define inlib_rroot_key
 
-#include "rbuf"
-#include "seek"
-#include "date"
-#include "ifile"
-#include "../sout"
+#include "rbuf.h"
+#include "seek.h"
+#include "date.h"
+#include "ifile.h"
+#include "../sout.h"
 
 #ifdef INLIB_MEM
-    #include "../mem"
+    #include "../mem.h"
 #endif
 
 #include <map>
