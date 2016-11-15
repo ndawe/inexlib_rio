@@ -1,0 +1,5 @@
+#!/bin/sh -f
+
+mkdir bin
+g++ wroot.cpp -o bin/wroot -I../ -DEXLIB_USE_NATIVE_ZLIB -lz
+g++ rroot.cpp -o bin/rroot -I../ -DEXLIB_USE_NATIVE_ZLIB -lz
