@@ -1,9 +1,9 @@
 #!/bin/sh -f
 
-bush_home=`dirname $0`/../../../bush
+bush_home=`dirname $0`/../../bush
 
-inlib_home=${bush_home}/../inexlib/inlib
-exlib_home=${bush_home}/../inexlib/exlib
+inlib_home=${bush_home}/../inexlib
+exlib_home=${bush_home}/../inexlib
 
 #set -x
 
