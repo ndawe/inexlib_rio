@@ -8,9 +8,9 @@
 
 namespace inlib {
 
-//NOTE : const <type>& in args to be compatible and efficient with inlib::symbol.
+    //NOTE : const <type>& in args to be compatible and efficient with inlib::symbol.
 
-//float
+    //float
     inline float _pow(const float& a_x, const float& a_y)
     {
         return ::powf(a_x, a_y);
@@ -56,7 +56,7 @@ namespace inlib {
         return a_x;
     }
 
-//double
+    //double
     inline double _pow(const double& a_x, const double& a_y)
     {
         return ::pow(a_x, a_y);
@@ -102,7 +102,7 @@ namespace inlib {
         return a_x;
     }
 
-//long double
+    //long double
     #ifndef ANDROID
     inline long double _pow(const long double& a_x, const long double& a_y)
     {

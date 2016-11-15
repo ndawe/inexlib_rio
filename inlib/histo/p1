@@ -10,12 +10,12 @@
 namespace inlib {
     namespace histo {
 
-//TC is for a coordinate.
-//TO is for an offset/index to identify/find a bind.
-//TN is for a number of entries.
-//TW is for a weight.
-//TH is for a height. Should be the same as TV.
-//TV is for a value (in general same as TC).
+        //TC is for a coordinate.
+        //TO is for an offset/index to identify/find a bind.
+        //TN is for a number of entries.
+        //TW is for a weight.
+        //TH is for a height. Should be the same as TV.
+        //TV is for a value (in general same as TC).
 
         template <class TC, class TO, class TN, class TW, class TH, class TV>
         class p1 : public b1<TC, TO, TN, TW, TH> {

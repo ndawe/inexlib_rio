@@ -16,11 +16,11 @@
 namespace inlib {
     namespace histo {
 
-//TC is for a coordinate.
-//TO is for an offset used to identify a bin.
-//TN is for a number of entries.
-//TW is for a weight.
-//TH is for a height.
+        //TC is for a coordinate.
+        //TO is for an offset used to identify a bin.
+        //TN is for a number of entries.
+        //TW is for a weight.
+        //TH is for a height.
 
         template <class TC, class TO, class TN, class TW, class TH>
         class base_histo : protected histo_data<TC, TO, TN, TW> {
@@ -559,7 +559,7 @@ namespace inlib {
                     }
                 }
 
-//{for(dim_t iplane=0;iplane<nplane;iplane++) parent::m_in_range_plane_Sxyw[iplane] ??? a_histo.m_in_range_plane_Sxyw[iplane];}
+                //{for(dim_t iplane=0;iplane<nplane;iplane++) parent::m_in_range_plane_Sxyw[iplane] ??? a_histo.m_in_range_plane_Sxyw[iplane];}
                 parent::update_fast_getters();
             }
 
@@ -593,7 +593,7 @@ namespace inlib {
                     }
                 }
 
-//{for(dim_t iplane=0;iplane<nplane;iplane++) parent::m_in_range_plane_Sxyw[iplane] ??? a_histo.m_in_range_plane_Sxyw[iplane];}
+                //{for(dim_t iplane=0;iplane<nplane;iplane++) parent::m_in_range_plane_Sxyw[iplane] ??? a_histo.m_in_range_plane_Sxyw[iplane];}
                 parent::update_fast_getters();
                 return true;
             }
@@ -641,7 +641,7 @@ namespace inlib {
                     }
                 }
 
-//{for(dim_t iplane=0;iplane<nplane;iplane++) parent::m_in_range_plane_Sxyw[iplane] ??? a_histo.m_in_range_plane_Sxyw[iplane];}
+                //{for(dim_t iplane=0;iplane<nplane;iplane++) parent::m_in_range_plane_Sxyw[iplane] ??? a_histo.m_in_range_plane_Sxyw[iplane];}
                 parent::update_fast_getters();
                 return true;
             }
@@ -731,7 +731,7 @@ namespace inlib {
             }
         };
 
-// predefined annotation keys :
+        // predefined annotation keys :
         inline const std::string& key_axis_x_title()
         {
             static const std::string s_v("axis_x.title");

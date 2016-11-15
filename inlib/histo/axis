@@ -12,8 +12,8 @@ namespace inlib {
 
         enum { axis_UNDERFLOW_BIN = -2, axis_OVERFLOW_BIN = -1 }; //AIDA casing.
 
-//TC is for a coordinate.
-//TO is for an offset used to identify a bin.
+        //TC is for a coordinate.
+        //TO is for an offset used to identify a bin.
 
         template <class TC, class TO>
         class axis {

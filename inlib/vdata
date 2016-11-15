@@ -12,7 +12,7 @@
 
 namespace inlib {
 
-// || !__GXX_EXPERIMENTAL_CXX0X__
+    // || !__GXX_EXPERIMENTAL_CXX0X__
 
     template <class T>
     inline const T* vec_data(const std::vector<T>& a_vec)

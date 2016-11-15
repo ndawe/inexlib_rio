@@ -37,7 +37,7 @@ namespace inlib {
             time_t tloc = ::time(0);
             struct tm tpa;
             struct tm* tp = (tm*)::localtime_r(&tloc, &tpa); //does not exist on Windows.
-//struct tm *tp = (tm*)::localtime(&tloc); //not thread safe (but exist on Windows).
+            //struct tm *tp = (tm*)::localtime(&tloc); //not thread safe (but exist on Windows).
             unsigned int year   = tp->tm_year;
             unsigned int month  = tp->tm_mon + 1;
             unsigned int day    = tp->tm_mday;

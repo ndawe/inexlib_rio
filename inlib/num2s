@@ -97,7 +97,7 @@ namespace inlib {
     }
     */
 
-// for the below std::vector num2s in cast T=std::string :
+    // for the below std::vector num2s in cast T=std::string :
     inline bool num2s(const std::string& a_value, std::string& a_s)
     {
         a_s = a_value;

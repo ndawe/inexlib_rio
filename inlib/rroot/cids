@@ -85,12 +85,12 @@ namespace inlib {
             return base_cid() + 16;
         }
 
-//base for templates :
+        //base for templates :
         inline cid base_leaf_cid()
         {
             return base_cid() + 20;   //+12=32
         }
-//NOTE : leaf<T> = base_leaf_cid()+_cid(T)
+        //NOTE : leaf<T> = base_leaf_cid()+_cid(T)
         inline cid stl_vector_cid()
         {
             return base_cid() + 33;   //+12=45

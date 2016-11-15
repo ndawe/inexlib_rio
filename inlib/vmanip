@@ -8,9 +8,9 @@
 
 namespace inlib {
 
-//////////////////////////////////////////////////////////
-/// manipulations that induces no intermediate vector : //
-//////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    /// manipulations that induces no intermediate vector : //
+    //////////////////////////////////////////////////////////
 
     template <class T>
     inline void clear(std::vector<T*>& a_vec)
@@ -379,7 +379,7 @@ namespace inlib {
 
 namespace inlib {
 
-//NOTE : print is a Python keyword.
+    //NOTE : print is a Python keyword.
     template <class T>
     inline void dump(const std::vector<T>& a_vec, std::ostream& a_out)
     {

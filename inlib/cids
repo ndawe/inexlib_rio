@@ -48,7 +48,7 @@ namespace inlib {
         return 9;
     }
 
-// not compiler types :
+    // not compiler types :
     inline cid _cid(uint64)
     {
         return 10;
@@ -70,11 +70,11 @@ namespace inlib {
         return 14;
     }
 
-//NOTE : avoid time_t which is defined in general as a long
-//       and is then ambiguous relative to int/int64.
+    //NOTE : avoid time_t which is defined in general as a long
+    //       and is then ambiguous relative to int/int64.
 
-//NOTE : if adding some, it must not exceed 20. Else, you have to change
-//       the below for std::vector.
+    //NOTE : if adding some, it must not exceed 20. Else, you have to change
+    //       the below for std::vector.
 
 }
 
@@ -82,9 +82,9 @@ namespace inlib {
 
 namespace inlib {
 
-// For rntuple and rroot::ntuple::column_element.
-// The read::icolumn<T> needs a _cid(T) with T :
-//   std::vector< [basic_type, std::vector<basic_type>] >
+    // For rntuple and rroot::ntuple::column_element.
+    // The read::icolumn<T> needs a _cid(T) with T :
+    //   std::vector< [basic_type, std::vector<basic_type>] >
 
     template <class T>
     inline cid _cid(const std::vector<T>&)
@@ -98,11 +98,11 @@ namespace inlib {
         return 20 + _cid(T());
     }
 
-// Then : cid for std::vector< std::vector<T> > is going to be :
-//   20+_cid(std::vector<T>) = 2*20+_cid(T)
+    // Then : cid for std::vector< std::vector<T> > is going to be :
+    //   20+_cid(std::vector<T>) = 2*20+_cid(T)
 
-//WARNING : rroot/cids start at 100.
-//WARNING : rroot/geo_cids start at 1000.
+    //WARNING : rroot/cids start at 100.
+    //WARNING : rroot/geo_cids start at 1000.
 
 }
 

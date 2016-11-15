@@ -9,7 +9,7 @@
 namespace inlib {
     namespace histo {
 
-// d in h1d is for double (and not dimension).
+        // d in h1d is for double (and not dimension).
 
         class h1d : public h1<double, unsigned int, unsigned int, double, double> {
             typedef h1<double, unsigned int, unsigned int, double, double> parent;

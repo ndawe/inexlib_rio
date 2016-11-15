@@ -9,8 +9,8 @@
 namespace inlib {
     namespace histo {
 
-//TC is for a coordinate.
-//TO is for an offset used to identify a bin.
+        //TC is for a coordinate.
+        //TO is for an offset used to identify a bin.
 
         template <class TC, class TO>
         inline bool is_out(const std::vector< axis<TC, TO> >& a_axes, TO a_offset)

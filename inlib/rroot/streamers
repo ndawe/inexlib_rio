@@ -950,8 +950,8 @@ namespace inlib {
         }
 
         class TDirectory : public inlib::rroot::directory {
-//public:
-//  static const std::string& store_class() {return TDirectory_cls();}
+            //public:
+            //  static const std::string& store_class() {return TDirectory_cls();}
         public:
             TDirectory(ifile& a_file)
                 : inlib::rroot::directory(a_file)

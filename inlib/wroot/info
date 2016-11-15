@@ -11,12 +11,12 @@
 namespace inlib {
     namespace wroot {
 
-// sizeof(vtbl)         = 4
-// sizeof(unsigned int) = 4
-// sizeof(TObject)   = 12  = 2 * (unsigned int) + vtbl.
-// sizeof(TString)   = 8   = char* + vtbl.
-// sizeof(TNamed)    = 28  = TObject + 2 * TString.
-// sizeof(TObjArray) = 40
+        // sizeof(vtbl)         = 4
+        // sizeof(unsigned int) = 4
+        // sizeof(TObject)   = 12  = 2 * (unsigned int) + vtbl.
+        // sizeof(TString)   = 8   = char* + vtbl.
+        // sizeof(TNamed)    = 28  = TObject + 2 * TString.
+        // sizeof(TObjArray) = 40
 
         class StreamerInfo : public virtual ibo {
             static const std::string& s_class()

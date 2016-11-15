@@ -190,7 +190,7 @@ namespace inlib {
         return path;
     }
 
-//used in OpenPAW, BatchLab.
+    //used in OpenPAW, BatchLab.
     inline bool is_f77(const std::string& a_path)
     {
         std::string sfx = suffix(a_path);
@@ -214,7 +214,7 @@ namespace inlib {
         return false;
     }
 
-//used in OpenPAW, BatchLab.
+    //used in OpenPAW, BatchLab.
     inline bool is_cpp(const std::string& a_path)
     {
         std::string sfx = suffix(a_path);

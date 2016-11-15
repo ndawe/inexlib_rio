@@ -9,11 +9,11 @@
 namespace inlib {
     namespace histo { //have that for h1 ?
 
-//TC is for a coordinate.
-//TO is for an offset used to identify a bin.
-//TN is for a number of entries.
-//TW is for a weight.
-//TH is for a height. Should be the same as TW.
+        //TC is for a coordinate.
+        //TO is for an offset used to identify a bin.
+        //TN is for a number of entries.
+        //TW is for a weight.
+        //TH is for a height. Should be the same as TW.
 
         template <class TC, class TO, class TN, class TW, class TH>
         class h1 : public b1<TC, TO, TN, TW, TH> {

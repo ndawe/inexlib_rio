@@ -68,9 +68,9 @@ namespace inlib {
                 return m_buf.read(a_v);
             }
 
-//virtual bool visit(const char* a_v){
-//  return m_buf.read(std::string(a_v));
-//}
+            //virtual bool visit(const char* a_v){
+            //  return m_buf.read(std::string(a_v));
+            //}
 
             virtual bool visit(std::vector<bool>& a_v)
             {

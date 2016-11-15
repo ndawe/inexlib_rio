@@ -75,7 +75,7 @@ namespace inlib {
 
     #elif defined(_LP64)
 
-// 64 Bit Platforms
+    // 64 Bit Platforms
     typedef int int32;
     typedef long int64;
     inline const char* int32_format()
@@ -118,7 +118,7 @@ namespace inlib {
 
     #else
 
-// 32-Bit Platforms
+    // 32-Bit Platforms
     typedef int int32;
     typedef long long int64;
     inline const char* int32_format()
@@ -181,7 +181,7 @@ namespace inlib {
 
     typedef unsigned char byte;
 
-//for ./io :
+    //for ./io :
     typedef unsigned char uchar;
     typedef short int16;
     typedef unsigned short ushort;

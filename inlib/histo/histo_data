@@ -26,10 +26,10 @@ namespace inlib {
             return n;
         }
 
-//TC is for a coordinate.
-//TO is for an offset used to identify a bin.
-//TN is for a number of entries.
-//TW is for a weight.
+        //TC is for a coordinate.
+        //TO is for an offset used to identify a bin.
+        //TN is for a number of entries.
+        //TW is for a weight.
 
         template <class TC, class TO, class TN, class TW>
         class histo_data {

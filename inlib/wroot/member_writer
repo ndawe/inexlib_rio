@@ -121,9 +121,9 @@ namespace inlib {
                 return m_buf.write_array(a_v);
             }
 
-//virtual bool visit(const std::string&,const std::vector<unsigned char>& a_v){
-//  return m_buf.write_array(a_v);
-//}
+            //virtual bool visit(const std::string&,const std::vector<unsigned char>& a_v){
+            //  return m_buf.write_array(a_v);
+            //}
 
             virtual bool visit(const std::string&, const std::vector<std::string>& a_v)
             {
