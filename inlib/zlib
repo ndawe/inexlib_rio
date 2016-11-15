@@ -9,12 +9,7 @@
 //NOTE : zlib contains deflate/inflate and also the gz functions to write/read a .gz file.
 //       The gz functions use also deflate/inflate.
 
-#ifdef EXLIB_USE_NATIVE_ZLIB
 #include <zlib.h>
-#else //EXLIB_USE_NATIVE_ZLIB
-#include <ourex_zlib.h> //enforce ourex zlib
-#endif //EXLIB_USE_NATIVE_ZLIB
-
 #include <ostream>
 
 namespace inlib {
