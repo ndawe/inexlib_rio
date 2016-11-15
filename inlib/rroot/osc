@@ -9,35 +9,38 @@
 #include "../store/osc_streamers"
 
 namespace inlib {
-namespace rroot {
+    namespace rroot {
 
-template <class H>
-inline bool from_osc(buffer& a_buffer,const std::string& a_cls,
-                     H& a_histo){
+        template <class H>
+        inline bool from_osc(buffer& a_buffer, const std::string& a_cls,
+                             H& a_histo)
+        {
+            //Stream as in a BatchLab/Rio/Data.h :
+            unsigned int s, c;
+            short v;
 
-  //Stream as in a BatchLab/Rio/Data.h :
+            if (!a_buffer.read_version(v, s, c)) return false;
 
-  unsigned int s, c;
-  short v;
-  if(!a_buffer.read_version(v,s,c)) return false;
+            std::string name;
+            std::string title;
 
-  std::string name;
-  std::string title;  
-  if(!Named_stream(a_buffer,name,title)) return false;
+            if (!Named_stream(a_buffer, name, title)) return false;
 
-  member_reader mr(a_buffer);
-  if(!osc::read(mr,a_histo)) {
-    a_buffer.out() << "inlib::rroot::from_osc(" << a_cls << ") :"
-                   << " streaming failed."
-                   << std::endl;
-    return false;
-  }
+            member_reader mr(a_buffer);
 
-  if(!a_buffer.check_byte_count(s,c,a_cls)) return false;
+            if (!osc::read(mr, a_histo)) {
+                a_buffer.out() << "inlib::rroot::from_osc(" << a_cls << ") :"
+                               << " streaming failed."
+                               << std::endl;
+                return false;
+            }
 
-  return true;
+            if (!a_buffer.check_byte_count(s, c, a_cls)) return false;
+
+            return true;
+        }
+
+    }
 }
-
-}}
 
 #endif

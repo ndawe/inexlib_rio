@@ -6,7 +6,7 @@
 
 namespace inlib {
 
-typedef unsigned short cid;
+    typedef unsigned short cid;
 
 }
 

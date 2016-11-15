@@ -5,10 +5,11 @@
 #define inlib_rroot_date
 
 namespace inlib {
-namespace rroot {
+    namespace rroot {
 
-typedef unsigned int date;
+        typedef unsigned int date;
 
-}}
+    }
+}
 
 #endif

@@ -7,23 +7,25 @@
 #include "seek"
 
 namespace inlib {
-namespace wroot {
-  class ifile;
-  class iobject;
-}}
+    namespace wroot {
+        class ifile;
+        class iobject;
+    }
+}
 
 namespace inlib {
-namespace wroot {
+    namespace wroot {
 
-class idir {
-public:
-  virtual ~idir(){}
-public:
-  virtual ifile& file() = 0;
-  virtual seek seek_directory() const = 0;
-  virtual void append_object(iobject*) = 0; //for tree.
-};
+        class idir {
+        public:
+            virtual ~idir() {}
+        public:
+            virtual ifile& file() = 0;
+            virtual seek seek_directory() const = 0;
+            virtual void append_object(iobject*) = 0; //for tree.
+        };
 
-}}
+    }
+}
 
 #endif

@@ -11,11 +11,12 @@
 #include "../typedefs"
 
 namespace inlib {
-namespace rroot {
+    namespace rroot {
 
-typedef inlib::int64 seek;
-typedef int seek32;
+        typedef inlib::int64 seek;
+        typedef int seek32;
 
-}}
+    }
+}
 
 #endif
