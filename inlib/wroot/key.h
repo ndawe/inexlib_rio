@@ -5,7 +5,7 @@
 #define inlib_wroot_key
 
 #include "seek.h"
-#include "date.h"
+#include "inlib/root/date.h"
 #include "ifile.h"
 #include "wbuf.h"
 #include "../sout.h"

@@ -6,10 +6,10 @@
 
 #include "idir.h"
 
-#include "date.h"
+#include "inlib/root/date.h"
 #include "key.h"
 #include "ifile.h"
-#include "date.h"
+#include "inlib/root/date.h"
 #include "buffer.h"
 #include "iobject.h"
 

@@ -1,8 +1,8 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_date
-#define inlib_wroot_date
+#ifndef inlib_root_date
+#define inlib_root_date
 
 //NOTE : Windows : localtime_r does not exist.
 //WARNING : G4 does not want to include windows.h.
@@ -14,7 +14,7 @@
 #endif
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         typedef unsigned int date;
 
@@ -49,8 +49,14 @@ namespace inlib {
         }
 
     }
-}
 
-//inlib_build_use kernel
+    namespace rroot {
+        using namespace root;
+    }
+
+    namespace wroot {
+        using namespace root;
+    }
+}
 
 #endif

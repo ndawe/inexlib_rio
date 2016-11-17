@@ -5,7 +5,7 @@
 #define inlib_rroot_directory
 
 #include "seek.h"
-#include "date.h"
+#include "inlib/root/date.h"
 #include "key.h"
 #include "ifile.h"
 #include "../forit.h"

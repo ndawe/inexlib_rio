@@ -5,7 +5,7 @@
 #define inlib_rroot_streamers
 
 #include "named.h"
-#include "date.h"
+#include "inlib/root/date.h"
 #include "directory.h"
 #include "graph.h"
 #include "clss.h"
