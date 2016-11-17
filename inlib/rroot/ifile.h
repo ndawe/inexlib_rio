@@ -4,7 +4,7 @@
 #ifndef inlib_rroot_ifile
 #define inlib_rroot_ifile
 
-#include "seek.h"
+#include "inlib/root/seek.h"
 #include "../press_func.h"
 
 namespace inlib {

@@ -7,7 +7,7 @@
 #include "base_leaf.h"
 #include "basket.h"
 #include "named.h"
-#include "seek.h"
+#include "inlib/root/seek.h"
 #include "ifile.h"
 #include "ifac.h"
 #include "../mnmx.h"

@@ -4,7 +4,7 @@
 #ifndef inlib_wroot_free_seg
 #define inlib_wroot_free_seg
 
-#include "seek.h"
+#include "inlib/root/seek.h"
 #include "wbuf.h"
 #include "../forit.h"
 

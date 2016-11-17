@@ -5,7 +5,7 @@
 #define inlib_rroot_key
 
 #include "rbuf.h"
-#include "seek.h"
+#include "inlib/root/seek.h"
 #include "inlib/root/date.h"
 #include "ifile.h"
 #include "../sout.h"

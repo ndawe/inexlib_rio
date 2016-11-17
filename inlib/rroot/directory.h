@@ -4,7 +4,7 @@
 #ifndef inlib_rroot_directory
 #define inlib_rroot_directory
 
-#include "seek.h"
+#include "inlib/root/seek.h"
 #include "inlib/root/date.h"
 #include "key.h"
 #include "ifile.h"
