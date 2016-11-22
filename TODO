@@ -1,5 +1,6 @@
 >>DONE base_leaf.h
 >>DONE date.h
+>>DONE file.h
 >>DONE ifile.h
 >>DONE info.h
 >>DONE seek.h
@@ -9,7 +10,6 @@ branch.h
 branch_element.h
 buffer.h
 directory.h
-file.h
 key.h
 leaf.h
 named.h

@@ -1,22 +1,19 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_file
-#define inlib_wroot_file
+#ifndef inlib_root_file
+#define inlib_root_file
 
 #include "ifile.h"
-
 #include "directory.h"
-
 #include "infos.h"
 #include "free_seg.h"
 
 #include "../platform.h"
-
 #include "../path.h"
 
 #include <map>
-
+#include <string>
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/stat.h>
@@ -31,12 +28,12 @@
 #endif
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         class file : public virtual ifile {
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::wroot::file");
+                static const std::string s_v("inlib::root::file");
                 return s_v;
             }
             static int not_open()
@@ -52,6 +49,10 @@ namespace inlib {
                 return 2000000000;
             }
         public: //ifile
+            virtual const std::string& path() const
+            {
+                return m_path;
+            }
             virtual bool verbose() const
             {
                 return m_verbose;
@@ -93,7 +94,7 @@ namespace inlib {
 
                 if (::lseek(m_file, a_offset, whence) < 0) {
                 #endif
-                    m_out << "inlib::wroot::file::set_pos :"
+                    m_out << "inlib::root::file::set_pos :"
                           << " cannot set position " << a_offset
                           << " in file " << sout(m_path) << "."
                           << std::endl;
@@ -112,14 +113,14 @@ namespace inlib {
                 m_END = a_end;
 
                 if (m_free_segs.empty()) {
-                    m_out << "inlib::wroot::file::set_END :"
+                    m_out << "inlib::root::file::set_END :"
                           << " free_seg list should not be empty here."
                           << std::endl;
                 } else {
                     free_seg* end_seg = m_free_segs.back();
 
                     if (end_seg->last() != START_BIG_FILE()) {
-                        m_out << "inlib::wroot::file::set_END :"
+                        m_out << "inlib::root::file::set_END :"
                               << " last free_seg is not the ending of file one."
                               << " free_seg list looks corrupted."
                               << std::endl;
@@ -127,6 +128,38 @@ namespace inlib {
                         m_free_segs.back()->set_first(m_END);
                     }
                 }
+            }
+
+            virtual bool read_buffer(char* a_buffer, uint32 a_length)
+            {
+                // Read a buffer from the file.
+                // This is the basic low level read operation.
+                #ifdef _MSC_VER
+                typedef int ssize_t;
+                #endif
+                ssize_t siz;
+
+                while ((siz = ::read(m_file, a_buffer, a_length)) < 0 &&
+                       error_number() == EINTR) reset_error_number();
+
+                if (siz < 0) {
+                    m_out << "inlib::root::file::read_buffer :"
+                          << " error reading from file " << sout(m_path) << "."
+                          << std::endl;
+                    return false;
+                }
+
+                if (siz != ssize_t(a_length)) {
+                    m_out << "inlib::root::file::read_buffer :"
+                          << " error reading all requested bytes from file "
+                          << sout(m_path) << ", got " << long_out(siz)
+                          << " of " << a_length
+                          << std::endl;
+                    return false;
+                }
+
+                m_bytes_read += siz;
+                return true;
             }
 
             virtual bool write_buffer(const char* a_buffer, uint32 a_length)
@@ -141,14 +174,14 @@ namespace inlib {
                        error_number() == EINTR) reset_error_number();
 
                 if (siz < 0) {
-                    m_out << "inlib::wroot::file::write_buffer :"
+                    m_out << "inlib::root::file::write_buffer :"
                           << " error writing to file " << sout(m_path) << "."
                           << std::endl;
                     return false;
                 }
 
                 if (siz != (ssize_t)a_length) {
-                    m_out << "inlib::wroot::file::write_buffer :"
+                    m_out << "inlib::root::file::write_buffer :"
                           << "error writing all requested bytes to file " << sout(m_path)
                           << ", wrote " << long_out(siz) << " of " << a_length
                           << std::endl;
@@ -176,7 +209,7 @@ namespace inlib {
                 // Synchornize a file's in-core and on-disk states.
                 #ifdef _MSC_VER
                 if (::_commit(m_file)) {
-                    m_out << "inlib::wroot::file::synchronize :"
+                    m_out << "inlib::root::file::synchronize :"
                           << " in _commit() for file " << sout(m_path) << "."
                           << std::endl;
                     return false;
@@ -187,7 +220,7 @@ namespace inlib {
                 #else
 
                 if (::fsync(m_file) < 0) {
-                    m_out << "inlib::wroot::file::synchronize :"
+                    m_out << "inlib::root::file::synchronize :"
                           << " error in fsync() for file " << sout(m_path) << "."
                           << std::endl;
                     return false;
@@ -209,6 +242,20 @@ namespace inlib {
                 a_func = (*it).second;
                 return true;
             }
+
+            virtual bool unziper(char a_key, decompress_func& a_func) const
+            {
+                std::map<char, decompress_func>::const_iterator it = m_unzipers.find(a_key);
+
+                if (it == m_unzipers.end()) {
+                    a_func = 0;
+                    return false;
+                }
+
+                a_func = (*it).second;
+                return true;
+            }
+
             virtual uint32 compression() const
             {
                 return m_compress;
@@ -227,7 +274,7 @@ namespace inlib {
                     inlib::compress_func func;
 
                     if (!ziper('Z', func)) {
-                        //m_out << "inlib::wroot::directory::write_object :"
+                        //m_out << "inlib::root::directory::write_object :"
                         //      << " zlib ziper not found."
                         //      << std::endl;
                         a_kbuf = (char*)a_buffer.buf();
@@ -270,6 +317,11 @@ namespace inlib {
                     a_kdel = false;
                 }
             }
+
+            virtual key& sinfos_key()
+            {
+                return m_streamer_info_key;
+            }
         public:
             file(std::ostream& a_out, const std::string& a_path, bool a_verbose = false)
                 : m_out(a_out)
@@ -298,7 +350,7 @@ namespace inlib {
                 if (access_path(m_path, kFileExists)) unlink(m_path);
 
                 if (!m_root_directory.is_valid()) {
-                    m_out << "inlib::wroot::file::file :"
+                    m_out << "inlib::root::file::file :"
                           << " " << sout(m_path) << " root directory badly created."
                           << std::endl;
                     return;
@@ -313,7 +365,7 @@ namespace inlib {
                               );
 
                 if (m_file == not_open()) {
-                    m_out << "inlib::wroot::file::file :"
+                    m_out << "inlib::root::file::file :"
                           << " can't open " << sout(a_path) << "."
                           << std::endl;
                     return;
@@ -328,7 +380,7 @@ namespace inlib {
                     key::std_string_record_size(m_path) +
                     key::std_string_record_size(m_title);
                 uint32 nbytes = namelen + m_root_directory.record_size();
-                wroot::key key(*this, 0, m_path, m_title, "TFile", nbytes); //set m_END.
+                root::key key(*this, 0, m_path, m_title, "TFile", nbytes); //set m_END.
                 // m_nbytes_name = start point of directory info from key head.
                 m_nbytes_name = key.key_length() + namelen;
                 m_root_directory.set_nbytes_name(m_nbytes_name);
@@ -336,7 +388,7 @@ namespace inlib {
 
                 //the below write 45 bytes at BOF (Begin Of File).
                 if (!write_header()) { //need m_nbytes_name, m_END after key written.
-                    m_out << "inlib::wroot::file::file :"
+                    m_out << "inlib::root::file::file :"
                           << " can't write file header."
                           << std::endl;
                     return;
@@ -354,7 +406,7 @@ namespace inlib {
                 }
 
                 if (m_verbose) {
-                    m_out << "inlib::wroot::file::file :"
+                    m_out << "inlib::root::file::file :"
                           << " write key ("
                           << namelen
                           << ", "
@@ -372,7 +424,7 @@ namespace inlib {
                 key.set_cycle(1);
 
                 if (!key.write_self()) {
-                    m_out << "inlib::wroot::file::file :"
+                    m_out << "inlib::root::file::file :"
                           << " key.write_self() failed."
                           << std::endl;
                     return;
@@ -383,7 +435,7 @@ namespace inlib {
                 uint32 n;
 
                 if (!key.write_file(n)) {
-                    m_out << "inlib::wroot::file::file :"
+                    m_out << "inlib::root::file::file :"
                           << " can't write key in file."
                           << std::endl;
                     return;
@@ -391,6 +443,46 @@ namespace inlib {
 
                 //::printf("debug : file::file : write key : %d\n",n);
             }
+
+            file(std::ostream& a_out, const std::string& a_path, bool a_verbose = false)
+                : m_out(a_out)
+                , m_path(a_path)
+                , m_verbose(a_verbose)
+                , m_file(not_open())
+                , m_bytes_read(0)
+                , m_root_directory(*this)
+                , m_streamer_info_key(*this)
+                  // begin of record :
+                , m_version(0)
+                , m_BEGIN(0)
+                , m_END(0)
+                , m_seek_free(0)
+                , m_seek_info(0)
+                , m_nbytes_free(0)
+                , m_nbytes_info(0)
+                , m_nbytes_name(0)
+            {
+                #ifdef INLIB_MEM
+                mem::increment(s_class().c_str());
+                #endif
+                m_file = _open(a_path.c_str(),
+                               #ifdef _MSC_VER
+                               O_RDONLY | O_BINARY, S_IREAD | S_IWRITE
+                               #else
+                               O_RDONLY, 0644
+                               #endif
+                              );
+
+                if (m_file == not_open()) {
+                    m_out << "inlib::root::file::file :"
+                          << " can't open " << sout(a_path) << "."
+                          << std::endl;
+                    return;
+                }
+
+                initialize();
+            }
+
             virtual ~file()
             {
                 close();
@@ -408,11 +500,28 @@ namespace inlib {
                 mem::increment(s_class().c_str());
                 #endif
             }
+
+            file(const file& a_from)
+                : ifile(a_from)
+                , m_out(a_from.m_out)
+                , m_root_directory(*this)
+                , m_streamer_info_key(*this)
+            {
+                #ifdef INLIB_MEM
+                mem::increment(s_class().c_str());
+                #endif
+            }
+
             file& operator=(const file&)
             {
                 return *this;
             }
         public:
+            uint32 version() const
+            {
+                return m_version;
+            }
+
             void set_compression(uint32 a_level)
             {
                 // level = 0 objects written to this file will not be compressed.
@@ -433,17 +542,16 @@ namespace inlib {
             {
                 if (m_file == not_open()) return;
 
-                m_root_directory.close();
 
                 if (m_free_segs.size()) {
                     if (!write_free_segments()) {
-                        m_out << "inlib::wroot::file::close :"
+                        m_out << "inlib::root::file::close :"
                               << " can't write free segments."
                               << std::endl;
                     }
 
                     if (!write_header())  { // Now write file header
-                        m_out << "inlib::wroot::file::close :"
+                        m_out << "inlib::root::file::close :"
                               << " can't write file header."
                               << std::endl;
                     }
@@ -459,6 +567,8 @@ namespace inlib {
                     }
                 }
 
+                m_root_directory.clear_keys();
+                m_root_directory.close();
                 ::close(m_file);
                 m_file = not_open();
             }
@@ -486,7 +596,7 @@ namespace inlib {
                 a_nbytes = 0;
 
                 if (m_verbose) {
-                    m_out << "inlib::wroot::file::write :"
+                    m_out << "inlib::root::file::write :"
                           << " writing Name=" << sout(m_path)
                           << " Title=" << sout(m_title) << "."
                           << std::endl;
@@ -497,21 +607,21 @@ namespace inlib {
                 if (!m_root_directory.write(nbytes)) return false; // Write directory tree
 
                 if (!write_streamer_infos()) {
-                    m_out << "inlib::wroot::file::write :"
+                    m_out << "inlib::root::file::write :"
                           << " write_streamer_infos failed."
                           << std::endl;
                     return false;
                 }
 
                 if (!write_free_segments()) {
-                    m_out << "inlib::wroot::file::write :"
+                    m_out << "inlib::root::file::write :"
                           << " can't write free segments."
                           << std::endl;
                     return false;
                 }
 
                 if (!write_header()) { //write 45 bytes at BOF.
-                    m_out << "inlib::wroot::file::write :"
+                    m_out << "inlib::root::file::write :"
                           << " can't write file header."
                           << std::endl;
                     return false;
@@ -519,6 +629,19 @@ namespace inlib {
 
                 a_nbytes = nbytes;
                 return true;
+            }
+
+            bool add_unziper(char a_key, decompress_func a_func)
+            {
+                std::map<char, decompress_func>::const_iterator it = m_unzipers.find(a_key);
+
+                if (it != m_unzipers.end()) {
+                    //(*it).second = a_func; //override ?
+                    return false;
+                } else {
+                    m_unzipers[a_key] = a_func;
+                    return true;
+                }
             }
 
             bool add_ziper(char a_key, compress_func a_func)
@@ -540,6 +663,28 @@ namespace inlib {
                 kWritePermission   = 2,
                 kReadPermission    = 4
             };
+            static int _open(const char* a_name, int a_flags, uint32 a_mode)
+            {
+                #if defined(__linux__) && (__GLIBC__ == 2) && (__GLIBC_MINOR__ >= 2)
+                return ::open64(a_name, a_flags, a_mode);
+                #else
+                return ::open(a_name, a_flags, a_mode);
+                #endif
+            }
+
+            static int _open(const char* a_name, int a_flags, unsigned int a_mode)
+            {
+                #if defined(__linux__) && (__GLIBC__ == 2) && (__GLIBC_MINOR__ >= 2)
+                return ::open64(a_name, a_flags, a_mode);
+                #else
+                return ::open(a_name, a_flags, a_mode);
+                #endif
+            }
+
+            static std::string sout(const std::string& a_string)
+            {
+                return "\"" + a_string + "\"";
+            }
             static bool access_path(const std::string& a_path, EAccessMode a_mode)
             {
                 // Returns true if one can access a file using the specified access mode.
@@ -575,14 +720,289 @@ namespace inlib {
                 #endif
             }
 
-            static int _open(const char* a_name, int a_flags, unsigned int a_mode)
+            bool initialize()
             {
-                #if defined(__linux__) && (__GLIBC__ == 2) && (__GLIBC_MINOR__ >= 2)
-                return ::open64(a_name, a_flags, a_mode);
-                #else
-                return ::open(a_name, a_flags, a_mode);
-                #endif
+                if (!read_header()) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't read header."
+                          << std::endl;
+                    return false;
+                }
+
+                /*
+                    fRootDirectory->setSeekDirectory(fBEGIN);
+                    // Read Free segments structure if file is writable :
+                    if (fWritable) {
+                      if (fSeekFree > fBEGIN) {
+                        if(!readFreeSegments()) {
+                          m_out << "inlib::root::file::initialize : Cannot read free segments."
+                               << std::endl;
+                          return false;
+                        }
+                      } else {
+                        m_out << "inlib::root::file::initialize : file \"" << fName
+                             << "\" probably not closed, cannot read free segments" << std::endl;
+                      }
+                    }
+                */
+                // Read Directory info :
+                uint32 nbytes = m_nbytes_name + m_root_directory.record_size(m_version);
+                char* header = new char[nbytes];
+                char* buffer = header;
+
+                if (!set_pos(m_BEGIN)) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't set position."
+                          << std::endl;
+                    delete [] header;
+                    return false;
+                }
+
+                if (!read_buffer(buffer, nbytes)) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't read buffer."
+                          << std::endl;
+                    delete [] header;
+                    return false;
+                }
+
+                buffer = header + m_nbytes_name;
+                const char* eob = header + nbytes;
+
+                if (!m_root_directory.from_buffer(eob, buffer)) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't read buffer (2)."
+                          << std::endl;
+                    delete [] header;
+                    return false;
+                }
+
+                uint32 nk =          //size of Key
+                    sizeof(int) +      //Key::fNumberOfBytes
+                    sizeof(short) +    //Key::fVersion
+                    2 * sizeof(int) +  //Key::fObjectSize, Date
+                    2 * sizeof(short) + //Key::fKeyLength,fCycle
+                    2 * sizeof(seek32); //Key::fSeekKey,fSeekParentDirectory
+                //WARNING : the upper is seek32 since at begin of file.
+                buffer = header + nk;
+                std::string cname;
+                rbuf rb(m_out, byte_swap(), eob, buffer);
+
+                // Should be "TFile".
+                if (!rb.read(cname)) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't read buffer (3)."
+                          << std::endl;
+                    delete [] header;
+                    return false;
+                }
+
+                if (cname != "TFile") {
+                    m_out << "inlib::root::file::initialize : TFile expected." << std::endl;
+                    delete [] header;
+                    return false;
+                }
+
+                if (m_verbose) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " " << sout("TFile") << " found."
+                          << std::endl;
+                }
+
+                if (!rb.read(cname)) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't read buffer (4)."
+                          << std::endl;
+                    delete [] header;
+                    return false;
+                }
+
+                if (m_verbose) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " found file name " << sout(cname)
+                          << std::endl;
+                }
+
+                if (!rb.read(m_title)) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't read buffer (5)."
+                          << std::endl;
+                    delete [] header;
+                    return false;
+                }
+
+                delete [] header;
+
+                if (m_verbose) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " found title " << sout(m_title)
+                          << std::endl;
+                }
+
+                uint32 dirNbytesName = m_root_directory.nbytes_name();
+
+                if (dirNbytesName < 10 || dirNbytesName > 1000) {
+                    m_out << "inlib::root::file::initialize :"
+                          << " can't read directory info."
+                          << std::endl;
+                    return false;
+                }
+
+                // Read keys of the top directory :
+                if (m_root_directory.seek_keys() > m_BEGIN) {
+                    uint32 n;
+
+                    if (!m_root_directory.read_keys(n)) {
+                        m_out << "inlib::root::file::initialize :"
+                              << " can't read keys."
+                              << std::endl;
+                        return false;
+                    }
+                } else {
+                    m_out << "inlib::root::file::initialize :"
+                          << " file " << sout(m_path)
+                          << " probably not closed."
+                          << std::endl;
+                    return false;
+                }
+
+                // Create StreamerInfo index
+                if (m_seek_info > m_BEGIN) {
+                    if (!read_streamer_infos()) {
+                        m_out << "inlib::root::file::initialize :"
+                              << " read_streamer_infos() failed."
+                              << std::endl;
+                        return false;
+                    }
+                } else {
+                    m_out << "inlib::root::file::initialize :"
+                          << " file " << sout(m_path)
+                          << " probably not closed."
+                          << std::endl;
+                    return false;
+                }
+
+                return true;
             }
+
+            bool read_header()
+            {
+                static const uint32 kBegin = 64;
+                char header[kBegin];
+
+                if (!set_pos()) return false;
+
+                if (!read_buffer(header, kBegin)) return false;
+
+                // make sure this is a root file
+                if (::strncmp(header, "root", 4)) {
+                    m_out << "inlib::root::file::read_header :"
+                          << " " << sout(m_path) << " not a file at the CERN-ROOT format."
+                          << std::endl;
+                    return false;
+                }
+
+                if (m_verbose) {
+                    m_out << "inlib::root::file::read_header :"
+                          << " file signature is " << sout("root")
+                          << std::endl;
+                }
+
+                char* buffer = header + 4;    // skip the "root" file identifier
+                const char* eob = header + kBegin;
+                rbuf rb(m_out, byte_swap(), eob, buffer);
+                {
+                    int v;
+
+                    if (!rb.read(v)) return false;
+
+                    m_version = v;
+                }
+                {
+                    seek32 i;
+
+                    if (!rb.read(i)) return false;
+
+                    m_BEGIN = i;
+                }
+
+                if (m_version > 1000000) {
+                    if (!rb.read(m_END)) return false;
+
+                    if (!rb.read(m_seek_free)) return false;
+                } else {
+                    {
+                        seek32 i;
+
+                        if (!rb.read(i)) return false;
+
+                        m_END = i;
+                    }
+                    {
+                        seek32 i;
+
+                        if (!rb.read(i)) return false;
+
+                        m_seek_free = i;
+                    }
+                }
+
+                if (m_verbose) {
+                    m_out << "inlib::root::file::read_header :"
+                          << " begin " << m_BEGIN
+                          << " end " << m_END
+                          << std::endl;
+                }
+
+                {
+                    int v;
+
+                    if (!rb.read(v)) return false;
+
+                    m_nbytes_free = v;
+                }
+
+                int nfree = 0;
+
+                if (!rb.read(nfree)) return false;
+
+                {
+                    int v;
+
+                    if (!rb.read(v)) return false;
+
+                    m_nbytes_name = v;
+                }
+                //m_out << "debug : 1002 " << m_nbytes_name << std::endl;
+                {
+                    char fUnits;
+
+                    if (!rb.read(fUnits)) return false;
+                }
+                {
+                    int fCompress;
+
+                    if (!rb.read(fCompress)) return false;
+                }
+
+                if (m_version > 1000000) {
+                    if (!rb.read(m_seek_info)) return false;
+                } else {
+                    {
+                        seek32 i;
+
+                        if (!rb.read(i)) return false;
+
+                        m_seek_info = i;
+                    }
+                }
+
+                if (!rb.read(m_nbytes_info)) return false;
+
+                //m_out << "debug : seek_info " << m_seek_info << " nbytes_info " << m_nbytes_info << std::endl;
+                return true;
+            }
+
             bool write_header()
             {
                 const char root[] = "root";
@@ -650,6 +1070,35 @@ namespace inlib {
                 return true;
             }
 
+            bool read_streamer_infos()
+            {
+                // Read the list of StreamerInfo from this file
+                // The key with name holding the list of TStreamerInfo objects is read.
+                // The corresponding TClass objects are updated.
+                if (m_seek_info <= 0) return false;
+
+                if (m_seek_info >= m_END) return false;
+
+                if (!set_pos(m_seek_info)) return false;
+
+                char* buffer = new char[m_nbytes_info + 1];
+
+                if (!read_buffer(buffer, m_nbytes_info)) {
+                    delete [] buffer;
+                    return false;
+                }
+
+                char* buf = buffer;
+
+                if (!m_streamer_info_key.from_buffer(buffer + m_nbytes_info, buf)) {
+                    delete [] buffer;
+                    return false;
+                }
+
+                delete [] buffer;
+                return true;
+            }
+
             bool write_streamer_infos()
             {
                 List<StreamerInfo> sinfos;
@@ -660,14 +1109,14 @@ namespace inlib {
                 buffer bref(m_out, byte_swap(), 256);
 
                 if (!sinfos.stream(bref)) {
-                    m_out << "inlib::wroot::file::write_streamer_infos :"
+                    m_out << "inlib::root::file::write_streamer_infos :"
                           << " cannot stream List<StreamerInfo>."
                           << std::endl;
                     return false;
                 }
 
                 uint32 nbytes = bref.length();
-                wroot::key key(*this,
+                root::key key(*this,
                                m_root_directory.seek_directory(),
                                "StreamerInfo", "",
                                sinfos.store_cls(),
@@ -681,7 +1130,7 @@ namespace inlib {
 
                 //key.set_cycle(1);
                 if (!key.write_self()) {
-                    m_out << "inlib::wroot::file::write_streamer_infos :"
+                    m_out << "inlib::root::file::write_streamer_infos :"
                           << " key.write_self() failed."
                           << std::endl;
                     return false;
@@ -710,7 +1159,7 @@ namespace inlib {
                 //  are overwritten by GAPSIZE where
                 //    GAPSIZE = -(Number of bytes occupied by the record).
                 if (m_free_segs.empty()) {
-                    m_out << "inlib::wroot::file::make_free_seg :"
+                    m_out << "inlib::root::file::make_free_seg :"
                           << " free_seg list should not be empty here."
                           << std::endl;
                     return false;
@@ -719,7 +1168,7 @@ namespace inlib {
                 free_seg* newfree = add_free(m_free_segs, a_first, a_last);
 
                 if (!newfree) {
-                    m_out << "inlib::wroot::file::make_free_seg :"
+                    m_out << "inlib::root::file::make_free_seg :"
                           << " add_free failed."
                           << std::endl;
                     return false;
@@ -759,7 +1208,7 @@ namespace inlib {
                 // Delete old record if it exists :
                 if (m_seek_free) {
                     if (!make_free_seg(m_seek_free, m_seek_free + m_nbytes_free - 1)) {
-                        m_out << "inlib::wroot::file::write_free_segments :"
+                        m_out << "inlib::root::file::write_free_segments :"
                               << " key.write_self() failed."
                               << std::endl;
                         return false;
@@ -778,7 +1227,7 @@ namespace inlib {
 
                 if (!nbytes) return true;
 
-                wroot::key key(*this,
+                root::key key(*this,
                                m_root_directory.seek_directory(),
                                m_path, m_title, "TFile",
                                nbytes); //set m_END
@@ -795,7 +1244,7 @@ namespace inlib {
 
                 //key.set_cycle(1);
                 if (!key.write_self()) {
-                    m_out << "inlib::wroot::file::write_free_segments :"
+                    m_out << "inlib::root::file::write_free_segments :"
                           << " key.write_self() failed."
                           << std::endl;
                     return false;
@@ -805,7 +1254,7 @@ namespace inlib {
                 m_nbytes_free = key.number_of_bytes();
 
                 if (m_verbose) {
-                    m_out << "inlib::wroot::file::write_free_segments :"
+                    m_out << "inlib::root::file::write_free_segments :"
                           << " write key." << std::endl;
                 }
 
@@ -829,7 +1278,7 @@ namespace inlib {
                 const uint32 HDRSIZE = 9;
 
                 if (a_tgtsize < HDRSIZE) {
-                    a_out << "inlib::rroot::directory::zip :"
+                    a_out << "inlib::root::directory::zip :"
                           << " target buffer too small."
                           << std::endl;
                     a_irep = 0;
@@ -837,7 +1286,7 @@ namespace inlib {
                 }
 
                 if (a_srcsize > 0xffffff) {
-                    a_out << "inlib::rroot::directory::zip :"
+                    a_out << "inlib::root::directory::zip :"
                           << " source buffer too big."
                           << std::endl;
                     a_irep = 0;
@@ -850,7 +1299,7 @@ namespace inlib {
                             a_srcsize, a_src,
                             a_tgtsize, a_tgt + HDRSIZE,
                             out_size)) {
-                    a_out << "inlib::rroot::directory::zip :"
+                    a_out << "inlib::root::directory::zip :"
                           << " zipper failed."
                           << std::endl;
                     a_irep = 0;
@@ -858,7 +1307,7 @@ namespace inlib {
                 }
 
                 if ((HDRSIZE + out_size) > a_tgtsize) {
-                    a_out << "inlib::rroot::directory::zip :"
+                    a_out << "inlib::root::directory::zip :"
                           << " target buffer overflow."
                           << std::endl;
                     a_irep = 0;
@@ -904,9 +1353,12 @@ namespace inlib {
             std::string m_path;
             bool m_verbose;
             int m_file;
+            inlib::uint64 m_bytes_read; //Number of bytes read from this file
             //uint64 m_bytes_write; //Number of bytes write in this file
             std::string m_title; //must be before the below.
             directory m_root_directory;
+            key m_streamer_info_key;
+            std::map<char, decompress_func> m_unzipers;
             std::map<char, compress_func> m_zipers;
             std::list<free_seg*> m_free_segs; //Free segments linked list table
             // begin of record :
