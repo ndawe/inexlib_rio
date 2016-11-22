@@ -1,8 +1,8 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_graph
-#define inlib_rroot_graph
+#ifndef inlib_root_graph
+#define inlib_root_graph
 
 #include "../scast.h"
 #include "buffer.h"
@@ -10,7 +10,7 @@
 #include "cids.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         class graph : public virtual iro {
             static const std::string& s_store_class()
@@ -21,7 +21,7 @@ namespace inlib {
         public:
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::rroot::graph");
+                static const std::string s_v("inlib::root::graph");
                 return s_v;
             }
         public: //iro

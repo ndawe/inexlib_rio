@@ -1,13 +1,13 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_cids
-#define inlib_rroot_cids
+#ifndef inlib_root_cids
+#define inlib_root_cids
 
 #include "../cid.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         inline cid base_cid()
         {

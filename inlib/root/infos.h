@@ -1,13 +1,13 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_infos
-#define inlib_wroot_infos
+#ifndef inlib_root_infos
+#define inlib_root_infos
 
 #include "info.h"
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         inline void scs(unsigned int& a_cs, const std::string& a_s)
         {
@@ -78,7 +78,7 @@ namespace inlib {
                 info->add(new streamer_uint(ofs, "fBits", "bit field status word"));
 
                 if (ofs != size_TObject()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TObject " << ofs << " (" << size_TObject() << " expected.)"
                           << std::endl;
                 }
@@ -105,7 +105,7 @@ namespace inlib {
                 info->add(new streamer_string(ofs, "fTitle", "object title"));
 
                 if (ofs != size_TNamed()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TNamed " << ofs << " (" << size_TNamed() << " expected.)"
                           << std::endl;
                 }
@@ -474,7 +474,7 @@ namespace inlib {
 
                 //2 (alignement ???)
                 if (ofs != size_TAttLine()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TAttLine " << ofs << " (" << size_TAttLine() << " expected.)"
                           << std::endl;
                 }
@@ -499,7 +499,7 @@ namespace inlib {
                 ofs += size_SHORT;
 
                 if (ofs != size_TAttFill()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TAttFill " << ofs << " (" << size_TAttFill() << " expected.)"
                           << std::endl;
                 }
@@ -528,7 +528,7 @@ namespace inlib {
                 ofs += size_FLOAT;
 
                 if (ofs != size_TAttMarker()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TAttMarker " << ofs << " (" << size_TAttMarker() << " expected.)"
                           << std::endl;
                 }
@@ -650,7 +650,7 @@ namespace inlib {
                 ofs += size_POINTER; //!*fPlayer
 
                 if (ofs != size_TTree()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TTree " << ofs << " (" << size_TTree() << " expected.)"
                           << std::endl;
                 }
@@ -748,7 +748,7 @@ namespace inlib {
                 info->add(new streamer_string(ofs, "fFileName", "Name of file where buffers are stored (\"\" if in same file as Tree header)"));
 
                 if (ofs != size_TBranch()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TBranch " << ofs << " (" << size_TBranch() << " expected.)"
                           << std::endl;
                 }
@@ -838,7 +838,7 @@ namespace inlib {
                 ofs += size_POINTER; //!*fBranch
 
                 if (ofs != size_TLeaf()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TLeaf " << ofs << " (" << size_TLeaf() << " expected.)"
                           << std::endl;
                 }
@@ -1103,7 +1103,7 @@ namespace inlib {
 
                 //uuuu ofs += 2; //alignement ???
                 if (ofs != size_TAttAxis()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TAttAxis " << ofs << " (" << size_TAttAxis() << " expected.)"
                           << std::endl;
                 }
@@ -1156,7 +1156,7 @@ namespace inlib {
 
                 //v3-05-07 : 124 (stored) + 4  = 128
                 if (ofs != size_TAxis()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TAxis " << ofs << " (" << size_TAxis() << " expected.)"
                           << std::endl;
                 }
@@ -1246,7 +1246,7 @@ namespace inlib {
 
                 //v3-05-07 : 576  = 568 + 2 * 4 = ok
                 if (ofs != size_TH1()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TH1 " << ofs << " (" << size_TH1() << " expected.)"
                           << std::endl;
                 }
@@ -1348,7 +1348,7 @@ namespace inlib {
 
                 //v3-05-07 : <to be checked>
                 if (ofs != size_TH2()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TH2 " << ofs << " (" << size_TH2() << " expected.)"
                           << std::endl;
                 }
@@ -1386,7 +1386,7 @@ namespace inlib {
                 ofs += size_TArrayD;
 
                 if (ofs != size_TH2D()) {
-                    a_out << "inlib::wroot::fill_infos :"
+                    a_out << "inlib::root::fill_infos :"
                           << " TH2D " << ofs << " (" << size_TH2D() << " expected.)"
                           << std::endl;
                 }

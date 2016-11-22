@@ -1,13 +1,13 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_clss
-#define inlib_rroot_clss
+#ifndef inlib_root_clss
+#define inlib_root_clss
 
 #include <string>
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         inline const std::string& TH1F_cls()
         {

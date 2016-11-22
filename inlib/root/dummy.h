@@ -1,8 +1,8 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_dummy
-#define inlib_rroot_dummy
+#ifndef inlib_root_dummy
+#define inlib_root_dummy
 
 // dummy class with a generic streamer.
 // It is used within the reading of a tree
@@ -10,20 +10,19 @@
 // from the file a class name which is unknown
 // from the tree factory.
 
-#include "iro.h"
-
+#include "iro_ibo.h"
 #include "buffer.h"
 #include "../scast.h"
 #include "cids.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
-        class dummy : public virtual iro {
+        class dummy : public virtual iro_ibo {
         public:
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::rroot::dummy");
+                static const std::string s_v("inlib::root::dummy");
                 return s_v;
             }
         public: //iro
@@ -51,7 +50,7 @@ namespace inlib {
                 return 0;
             }
         public:
-            virtual iro* copy() const
+            virtual iro_ibo* copy() const
             {
                 return new dummy(*this);
             }
@@ -84,7 +83,7 @@ namespace inlib {
                 #endif
             }
         public:
-            dummy(const dummy& a_from): iro(a_from)
+            dummy(const dummy& a_from): iro_ibo(a_from)
             {
                 #ifdef INLIB_MEM
                 mem::increment(s_class().c_str());

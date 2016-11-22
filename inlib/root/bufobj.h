@@ -1,14 +1,14 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_bufobj
-#define inlib_wroot_bufobj
+#ifndef inlib_root_bufobj
+#define inlib_root_bufobj
 
 #include "iobject.h"
 #include "buffer.h"
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         class bufobj : public virtual iobject, public buffer {
         public:

@@ -1,36 +1,34 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_rall
-#define inlib_rroot_rall
+#ifndef inlib_root_rall
+#define inlib_root_rall
 
 #include "streamers.h"
 #include "fac.h"
 #include "tree.h"
 
-//#define INLIB_RROOT_NOT_OSC
-
-#ifndef INLIB_RROOT_NOT_OSC
+#ifndef INLIB_ROOT_NOT_OSC
     #include "osc.h"
 #endif
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
-        inline inlib::rroot::TDirectory* find_dir(inlib::rroot::directory& a_dir, const std::string& a_name)
+        inline inlib::root::TDirectory* find_dir(inlib::root::directory& a_dir, const std::string& a_name)
         {
             std::ostream& out = a_dir.file().out();
-            inlib::rroot::key* k = a_dir.find_key(a_name);
+            inlib::root::key* k = a_dir.find_key(a_name);
 
             if (!k) {
-                //out << "inlib::rroot::find_dir :"
+                //out << "inlib::root::find_dir :"
                 //    << " " << a_name << " not a key."
                 //    << std::endl;
                 return 0;
             }
 
-            if (k->object_class() != inlib::rroot::TDirectory_cls()) {
-                out << "inlib::rroot::find_dir :"
+            if (k->object_class() != inlib::root::TDirectory_cls()) {
+                out << "inlib::root::find_dir :"
                     << " key " << a_name << " not a TDirectory."
                     << std::endl;
                 return 0;
@@ -40,19 +38,19 @@ namespace inlib {
             char* buf = k->get_object_buffer(sz); //we don't have ownership of buf.
 
             if (!buf) {
-                out  << "inlib::rroot::find_dir :"
+                out  << "inlib::root::find_dir :"
                      << " can't get directory data buffer."
                      << std::endl;
                 return 0;
             }
 
-            inlib::rroot::buffer b(out, a_dir.file().byte_swap(), sz, buf, k->key_length(), false);
-            inlib::rroot::TDirectory* tdir = new inlib::rroot::TDirectory(a_dir.file());
+            inlib::root::buffer b(out, a_dir.file().byte_swap(), sz, buf, k->key_length(), false);
+            inlib::root::TDirectory* tdir = new inlib::root::TDirectory(a_dir.file());
 
             if (!tdir) return 0;
 
             if (!tdir->stream(b)) {
-                out << "inlib::rroot::find_dir :"
+                out << "inlib::root::find_dir :"
                     << " can't stream TDirectory."
                     << std::endl;
                 return 0;
@@ -61,28 +59,28 @@ namespace inlib {
             return tdir;
         }
 
-        inline bool read_key(std::ostream& a_out, inlib::rroot::key& a_key, bool a_dump)
+        inline bool read_key(std::ostream& a_out, inlib::root::key& a_key, bool a_dump)
         {
             unsigned int sz;
             char* buf = a_key.get_object_buffer(sz); //we don't have ownership of buf.
 
             if (!buf) {
-                a_out << "inlib::rroot::read_key :"
+                a_out << "inlib::root::read_key :"
                       << " can't get data buffer of " << a_key.object_name() << "."
                       << std::endl;
                 return false;
             }
 
-            //a_out << "inlib::rroot::read_key :"
+            //a_out << "inlib::root::read_key :"
             //      << " get data buffer size " << sz << "."
             //      << std::endl;
-            inlib::rroot::buffer b(a_out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
+            inlib::root::buffer b(a_out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
 
-            if (a_key.object_class() == inlib::rroot::TH1F_cls()) {
-                inlib::histo::h1d* h = inlib::rroot::TH1F_stream(b);
+            if (a_key.object_class() == inlib::root::TH1F_cls()) {
+                inlib::histo::h1d* h = inlib::root::TH1F_stream(b);
 
                 if (!h) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TH1F streaming failed"
                           << std::endl;
                 } else {
@@ -90,11 +88,11 @@ namespace inlib {
                 }
 
                 delete h;
-            } else if (a_key.object_class() == inlib::rroot::TH1D_cls()) {
-                inlib::histo::h1d* h = inlib::rroot::TH1D_stream(b);
+            } else if (a_key.object_class() == inlib::root::TH1D_cls()) {
+                inlib::histo::h1d* h = inlib::root::TH1D_stream(b);
 
                 if (!h) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TH1D streaming failed"
                           << std::endl;
                 } else {
@@ -102,11 +100,11 @@ namespace inlib {
                 }
 
                 delete h;
-            } else if (a_key.object_class() == inlib::rroot::TH2F_cls()) {
-                inlib::histo::h2d* h = inlib::rroot::TH2F_stream(b);
+            } else if (a_key.object_class() == inlib::root::TH2F_cls()) {
+                inlib::histo::h2d* h = inlib::root::TH2F_stream(b);
 
                 if (!h) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TH2F streaming failed"
                           << std::endl;
                 } else {
@@ -114,11 +112,11 @@ namespace inlib {
                 }
 
                 delete h;
-            } else if (a_key.object_class() == inlib::rroot::TH2D_cls()) {
-                inlib::histo::h2d* h = inlib::rroot::TH2D_stream(b); //we get ownership of h.
+            } else if (a_key.object_class() == inlib::root::TH2D_cls()) {
+                inlib::histo::h2d* h = inlib::root::TH2D_stream(b); //we get ownership of h.
 
                 if (!h) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TH2D streaming failed"
                           << std::endl;
                 } else {
@@ -126,11 +124,11 @@ namespace inlib {
                 }
 
                 delete h;
-            } else if (a_key.object_class() == inlib::rroot::TH3D_cls()) {
-                inlib::histo::h3d* h = inlib::rroot::TH3D_stream(b); //we get ownership of h.
+            } else if (a_key.object_class() == inlib::root::TH3D_cls()) {
+                inlib::histo::h3d* h = inlib::root::TH3D_stream(b); //we get ownership of h.
 
                 if (!h) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TH3D streaming failed"
                           << std::endl;
                 } else {
@@ -138,11 +136,11 @@ namespace inlib {
                 }
 
                 delete h;
-            } else if (a_key.object_class() == inlib::rroot::TProfile_cls()) {
-                inlib::histo::p1d* p = inlib::rroot::TProfile_stream(b);
+            } else if (a_key.object_class() == inlib::root::TProfile_cls()) {
+                inlib::histo::p1d* p = inlib::root::TProfile_stream(b);
 
                 if (!p) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TProfile streaming failed"
                           << std::endl;
                 } else {
@@ -150,11 +148,11 @@ namespace inlib {
                 }
 
                 delete p;
-            } else if (a_key.object_class() == inlib::rroot::TProfile2D_cls()) {
-                inlib::histo::p2d* p = inlib::rroot::TProfile2D_stream(b);
+            } else if (a_key.object_class() == inlib::root::TProfile2D_cls()) {
+                inlib::histo::p2d* p = inlib::root::TProfile2D_stream(b);
 
                 if (!p) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TProfile2D streaming failed"
                           << std::endl;
                 } else {
@@ -163,11 +161,11 @@ namespace inlib {
 
                 delete p;
             } else if (a_key.object_class() == TTree_cls()) {
-                inlib::rroot::fac fac(a_key.file());
-                inlib::rroot::tree tree(a_key.file(), fac);
+                inlib::root::fac fac(a_key.file());
+                inlib::root::tree tree(a_key.file(), fac);
 
                 if (!tree.stream(b)) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " TTree streaming failed"
                           << std::endl;
                 } else {
@@ -205,12 +203,12 @@ namespace inlib {
                     }
                 }
 
-                #ifndef INLIB_RROOT_NOT_OSC
+                #ifndef INLIB_root_NOT_OSC
             } else if (a_key.object_class() == inlib::osc::s_h1d()) {
                 inlib::histo::h1d h("", 10, 0, 1);
 
                 if (!from_osc(b, inlib::osc::s_h1d(), h)) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " " << inlib::osc::s_h1d() << " streaming failed"
                           << std::endl;
                 } else {
@@ -220,7 +218,7 @@ namespace inlib {
                 inlib::histo::h2d h("", 10, 0, 1, 10, 0, 1);
 
                 if (!from_osc(b, inlib::osc::s_h2d(), h)) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " " << inlib::osc::s_h2d() << " streaming failed"
                           << std::endl;
                 } else {
@@ -230,7 +228,7 @@ namespace inlib {
                 inlib::histo::h3d h("", 10, 0, 1, 10, 0, 1, 10, 0, 1);
 
                 if (!from_osc(b, inlib::osc::s_h3d(), h)) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " " << inlib::osc::s_h3d() << " streaming failed"
                           << std::endl;
                 } else {
@@ -240,7 +238,7 @@ namespace inlib {
                 inlib::histo::p1d h("", 10, 0, 1);
 
                 if (!from_osc(b, inlib::osc::s_p1d(), h)) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " " << inlib::osc::s_p1d() << " streaming failed"
                           << std::endl;
                 } else {
@@ -250,7 +248,7 @@ namespace inlib {
                 inlib::histo::p2d h("", 10, 0, 1, 10, 0, 1);
 
                 if (!from_osc(b, inlib::osc::s_p2d(), h)) {
-                    a_out << "inlib::rroot::read_key :"
+                    a_out << "inlib::root::read_key :"
                           << " " << inlib::osc::s_p2d() << " streaming failed"
                           << std::endl;
                 } else {
@@ -258,10 +256,10 @@ namespace inlib {
                 }
 
                 #endif
-            } else if (a_key.object_class() == inlib::rroot::TDirectory_cls()) {
+            } else if (a_key.object_class() == inlib::root::TDirectory_cls()) {
                 //we should not pass here.
             } else {
-                a_out << "inlib::rroot::read_key :"
+                a_out << "inlib::root::read_key :"
                       << " dont't know how to read key with object class "
                       << inlib::sout(a_key.object_class())
                       << std::endl;
@@ -270,14 +268,14 @@ namespace inlib {
             return true;
         }
 
-        inline inlib::histo::h1d* key_to_h1d(inlib::rroot::key& a_key)
+        inline inlib::histo::h1d* key_to_h1d(inlib::root::key& a_key)
         {
             std::ostream& out = a_key.file().out();
 
-            if ((a_key.object_class() != inlib::rroot::TH1D_cls()) &&
-                (a_key.object_class() != inlib::rroot::TH1F_cls())
+            if ((a_key.object_class() != inlib::root::TH1D_cls()) &&
+                (a_key.object_class() != inlib::root::TH1F_cls())
                ) {
-                out << "inlib::rroot::from(h1d) :"
+                out << "inlib::root::from(h1d) :"
                     << " key not a TH1D and not a TH1F."
                     << std::endl;
                 return 0;
@@ -287,27 +285,27 @@ namespace inlib {
             char* buf = a_key.get_object_buffer(sz); //we don't have ownership of buf.
 
             if (!buf) {
-                out << "inlib::rroot::from(h1d) :"
+                out << "inlib::root::from(h1d) :"
                     << " can't get data buffer of " << a_key.object_name() << "."
                     << std::endl;
                 return 0;
             }
 
-            inlib::rroot::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
+            inlib::root::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
 
-            if (a_key.object_class() == inlib::rroot::TH1D_cls()) {
-                return inlib::rroot::TH1D_stream(b);
+            if (a_key.object_class() == inlib::root::TH1D_cls()) {
+                return inlib::root::TH1D_stream(b);
             } else {
-                return inlib::rroot::TH1F_stream(b);
+                return inlib::root::TH1F_stream(b);
             }
         }
 
-        inline inlib::histo::h2d* key_to_h2d(inlib::rroot::key& a_key)
+        inline inlib::histo::h2d* key_to_h2d(inlib::root::key& a_key)
         {
             std::ostream& out = a_key.file().out();
 
-            if (a_key.object_class() != inlib::rroot::TH2D_cls()) {
-                out << "inlib::rroot::from(h1d) :"
+            if (a_key.object_class() != inlib::root::TH2D_cls()) {
+                out << "inlib::root::from(h1d) :"
                     << " key not a TH2D."
                     << std::endl;
                 return 0;
@@ -317,22 +315,22 @@ namespace inlib {
             char* buf = a_key.get_object_buffer(sz); //we don't have ownership of buf.
 
             if (!buf) {
-                out << "inlib::rroot::from(h2d) :"
+                out << "inlib::root::from(h2d) :"
                     << " can't get data buffer of " << a_key.object_name() << "."
                     << std::endl;
                 return 0;
             }
 
-            inlib::rroot::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
-            return inlib::rroot::TH2D_stream(b);
+            inlib::root::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
+            return inlib::root::TH2D_stream(b);
         }
 
-        inline inlib::histo::h3d* key_to_h3d(inlib::rroot::key& a_key)
+        inline inlib::histo::h3d* key_to_h3d(inlib::root::key& a_key)
         {
             std::ostream& out = a_key.file().out();
 
-            if (a_key.object_class() != inlib::rroot::TH3D_cls()) {
-                out << "inlib::rroot::from(h1d) :"
+            if (a_key.object_class() != inlib::root::TH3D_cls()) {
+                out << "inlib::root::from(h1d) :"
                     << " key not a TH3D."
                     << std::endl;
                 return 0;
@@ -342,22 +340,22 @@ namespace inlib {
             char* buf = a_key.get_object_buffer(sz); //we don't have ownership of buf.
 
             if (!buf) {
-                out << "inlib::rroot::from(h3d) :"
+                out << "inlib::root::from(h3d) :"
                     << " can't get data buffer of " << a_key.object_name() << "."
                     << std::endl;
                 return 0;
             }
 
-            inlib::rroot::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
-            return inlib::rroot::TH3D_stream(b);
+            inlib::root::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
+            return inlib::root::TH3D_stream(b);
         }
 
-        inline inlib::histo::p1d* key_to_p1d(inlib::rroot::key& a_key)
+        inline inlib::histo::p1d* key_to_p1d(inlib::root::key& a_key)
         {
             std::ostream& out = a_key.file().out();
 
-            if (a_key.object_class() != inlib::rroot::TProfile_cls()) {
-                out << "inlib::rroot::from(p1d) :"
+            if (a_key.object_class() != inlib::root::TProfile_cls()) {
+                out << "inlib::root::from(p1d) :"
                     << " key not a TProfile."
                     << std::endl;
                 return 0;
@@ -367,22 +365,22 @@ namespace inlib {
             char* buf = a_key.get_object_buffer(sz); //we don't have ownership of buf.
 
             if (!buf) {
-                out << "inlib::rroot::from(p1d) :"
+                out << "inlib::root::from(p1d) :"
                     << " can't get data buffer of " << a_key.object_name() << "."
                     << std::endl;
                 return 0;
             }
 
-            inlib::rroot::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
-            return inlib::rroot::TProfile_stream(b);
+            inlib::root::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
+            return inlib::root::TProfile_stream(b);
         }
 
-        inline inlib::histo::p2d* key_to_p2d(inlib::rroot::key& a_key)
+        inline inlib::histo::p2d* key_to_p2d(inlib::root::key& a_key)
         {
             std::ostream& out = a_key.file().out();
 
-            if (a_key.object_class() != inlib::rroot::TProfile2D_cls()) {
-                out << "inlib::rroot::from(p2d) :"
+            if (a_key.object_class() != inlib::root::TProfile2D_cls()) {
+                out << "inlib::root::from(p2d) :"
                     << " key not a TProfile2D."
                     << std::endl;
                 return 0;
@@ -392,31 +390,31 @@ namespace inlib {
             char* buf = a_key.get_object_buffer(sz); //we don't have ownership of buf.
 
             if (!buf) {
-                out << "inlib::rroot::from(p2d) :"
+                out << "inlib::root::from(p2d) :"
                     << " can't get data buffer of " << a_key.object_name() << "."
                     << std::endl;
                 return 0;
             }
 
-            inlib::rroot::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
-            return inlib::rroot::TProfile2D_stream(b);
+            inlib::root::buffer b(out, a_key.file().byte_swap(), sz, buf, a_key.key_length(), false);
+            return inlib::root::TProfile2D_stream(b);
         }
 
         inline void read(std::ostream& a_out,
-                         inlib::rroot::ifile& a_file,
-                         const std::vector<inlib::rroot::key*>& a_keys,
+                         inlib::root::ifile& a_file,
+                         const std::vector<inlib::root::key*>& a_keys,
                          bool a_recursive,
                          bool a_ls,
                          bool a_dump,
                          unsigned int a_spaces)
         {
             {
-                std::vector<inlib::rroot::key*>::const_iterator it;
+                std::vector<inlib::root::key*>::const_iterator it;
 
                 for (it = a_keys.begin(); it != a_keys.end(); ++it) {
-                    inlib::rroot::key& k = *(*it);
+                    inlib::root::key& k = *(*it);
 
-                    if (k.object_class() != inlib::rroot::TDirectory_cls()) {
+                    if (k.object_class() != inlib::root::TDirectory_cls()) {
                         if (a_ls || a_dump) {
                             {
                                 for (unsigned int index = 0; index < a_spaces; index++) a_out << " ";
@@ -433,12 +431,12 @@ namespace inlib {
                 }
             }
             {
-                std::vector<inlib::rroot::key*>::const_iterator it;
+                std::vector<inlib::root::key*>::const_iterator it;
 
                 for (it = a_keys.begin(); it != a_keys.end(); ++it) {
-                    inlib::rroot::key& k = *(*it);
+                    inlib::root::key& k = *(*it);
 
-                    if (k.object_class() == inlib::rroot::TDirectory_cls()) {
+                    if (k.object_class() == inlib::root::TDirectory_cls()) {
                         if (a_ls || a_dump) {
                             {
                                 for (unsigned int index = 0; index < a_spaces; index++) a_out << " ";
@@ -457,15 +455,15 @@ namespace inlib {
                                    << " can't get directory data buffer."
                                    << std::endl;
                         } else {
-                            inlib::rroot::buffer b(a_out, a_file.byte_swap(), sz, buf, k.key_length(), false);
-                            inlib::rroot::TDirectory dir(a_file);
+                            inlib::root::buffer b(a_out, a_file.byte_swap(), sz, buf, k.key_length(), false);
+                            inlib::root::TDirectory dir(a_file);
 
                             if (!dir.stream(b)) {
                                 a_out << "read :"
                                       << " can't stream TDirectory."
                                       << std::endl;
                             } else {
-                                const std::vector<inlib::rroot::key*>& keys = dir.keys();
+                                const std::vector<inlib::root::key*>& keys = dir.keys();
                                 read(a_out, a_file, keys, a_recursive, a_ls, a_dump, a_spaces + 1);
                             }
                         }

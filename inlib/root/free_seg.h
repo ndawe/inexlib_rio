@@ -1,17 +1,17 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_free_seg
-#define inlib_wroot_free_seg
+#ifndef inlib_root_free_seg
+#define inlib_root_free_seg
 
 #include "inlib/root/seek.h"
-#include "wbuf.h"
+#include "buf.h"
 #include "../forit.h"
 
 #include <ostream>
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         class free_seg {
             static uint32 START_BIG_FILE()
@@ -67,7 +67,7 @@ namespace inlib {
                 }
             }
 
-            bool fill_buffer(wbuf& a_wb)
+            bool fill_buffer(buf& a_wb)
             {
                 short version = 1;
 
@@ -83,7 +83,7 @@ namespace inlib {
                     if (!a_wb.write(m_last)) return false;
                 } else {
                     if (m_first > START_BIG_FILE()) { //GB
-                        m_out << "inlib::wroot::free_seg::fill_buffer :"
+                        m_out << "inlib::root::free_seg::fill_buffer :"
                               << " attempt to write big Seek "
                               << m_first << " on 32 bits."
                               << std::endl;
@@ -93,7 +93,7 @@ namespace inlib {
                     if (!a_wb.write((seek32)m_first)) return false;
 
                     if (m_last > START_BIG_FILE()) { //GB
-                        m_out << "inlib::wroot::free_seg::fill_buffer :"
+                        m_out << "inlib::root::free_seg::fill_buffer :"
                               << " attempt to write big seek "
                               << m_last << " on 32 bits."
                               << std::endl;
@@ -118,7 +118,7 @@ namespace inlib {
 #include <list>
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         inline free_seg* find_after(const std::list<free_seg*>& a_list,
                                     free_seg* a_what)

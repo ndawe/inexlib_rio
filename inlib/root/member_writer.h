@@ -1,15 +1,15 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_member_writer
-#define inlib_wroot_member_writer
+#ifndef inlib_root_member_writer
+#define inlib_root_member_writer
 
 #include "../store/iobj_const_visitor.h"
 
 #include "buffer.h"
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         class member_writer : public virtual iobj_const_visitor {
         public:
@@ -46,14 +46,14 @@ namespace inlib {
 
             virtual bool visit(const std::string&, int64)
             {
-                m_buf.out() << "inlib::wroot::member_writer::visit(int64) :"
+                m_buf.out() << "inlib::root::member_writer::visit(int64) :"
                             << " dummy." << std::endl;
                 return false; //FIXME
             }
 
             virtual bool visit(const std::string&, uint64)
             {
-                m_buf.out() << "inlib::wroot::member_writer::visit(uint64) :"
+                m_buf.out() << "inlib::root::member_writer::visit(uint64) :"
                             << " dummy." << std::endl;
                 return false; //FIXME
             }
@@ -106,7 +106,7 @@ namespace inlib {
                                const std::vector<int64>& /*a_v*/)
             {
                 //FIXME return ::Rio::writeArray<Slash::int64>(fBuffer,a_v);
-                m_buf.out() << "inlib::wroot::member_writer::visit(vector<int64>) :"
+                m_buf.out() << "inlib::root::member_writer::visit(vector<int64>) :"
                             << " dummy." << std::endl;
                 return false;
             }

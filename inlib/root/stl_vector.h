@@ -1,8 +1,8 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_stl_vector
-#define inlib_rroot_stl_vector
+#ifndef inlib_root_stl_vector
+#define inlib_root_stl_vector
 
 #include "buffer.h"
 #include "cids.h"
@@ -12,7 +12,7 @@
 #include "../cids.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         template <class T>
         class stl_vector : public virtual iro, public std::vector<T> {
@@ -24,7 +24,7 @@ namespace inlib {
         public:
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::rroot::stl_vector<" + stype(T()) + ">");
+                static const std::string s_v("inlib::root::stl_vector<" + stype(T()) + ">");
                 return s_v;
             }
         public: //iro
@@ -133,7 +133,7 @@ namespace inlib {
             static const std::string& s_class()
             {
                 static const std::string s_v
-                ("inlib::rroot::stl_vector_vector<" + stype(T()) + ">");
+                ("inlib::root::stl_vector_vector<" + stype(T()) + ">");
                 return s_v;
             }
         public: //iro
@@ -249,7 +249,7 @@ namespace inlib {
         public:
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::rroot::stl_vector_string");
+                static const std::string s_v("inlib::root::stl_vector_string");
                 return s_v;
             }
         public: //iro

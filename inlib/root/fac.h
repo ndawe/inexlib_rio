@@ -1,8 +1,8 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_fac
-#define inlib_rroot_fac
+#ifndef inlib_root_fac
+#define inlib_root_fac
 
 #include "../sout.h"
 
@@ -14,7 +14,7 @@
 #include "dummy.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         class fac : public virtual ifac {
         public:

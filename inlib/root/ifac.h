@@ -1,20 +1,16 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_ifac
-#define inlib_rroot_ifac
+#ifndef inlib_root_ifac
+#define inlib_root_ifac
 
 #include <string>
 #include <map>
 
 namespace inlib {
-    namespace rroot {
-        class iro;
-    }
-}
+    namespace root {
 
-namespace inlib {
-    namespace rroot {
+        class iro_ibo;
 
         class ifac {
         public:
@@ -22,8 +18,8 @@ namespace inlib {
         public:
             virtual ~ifac() {}
         public:
-            virtual iro* create(const std::string& a_class, const args&) = 0;
-            virtual void destroy(iro*&) = 0;
+            virtual iro_ibo* create(const std::string& a_class, const args&) = 0;
+            virtual void destroy(iro_ibo*&) = 0;
         public:
             static void* find_args(const args& a_args, char a_key)
             {

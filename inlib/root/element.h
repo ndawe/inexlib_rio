@@ -1,15 +1,15 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_element
-#define inlib_wroot_element
+#ifndef inlib_root_element
+#define inlib_root_element
 
 #include "buffer.h"
 #include "named.h"
 #include "../snpf.h"
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         namespace streamer_info {
 

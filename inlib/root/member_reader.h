@@ -1,15 +1,15 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_member_reader
-#define inlib_rroot_member_reader
+#ifndef inlib_root_member_reader
+#define inlib_root_member_reader
 
 #include "../store/iobj_visitor.h"
 
 #include "buffer.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         class member_reader : public virtual iobj_visitor {
         public:
@@ -42,14 +42,14 @@ namespace inlib {
 
             virtual bool visit(int64&)
             {
-                m_buf.out() << "inlib::rroot::member_reader::visit(int64) :"
+                m_buf.out() << "inlib::root::member_reader::visit(int64) :"
                             << " dummy." << std::endl;
                 return false; //FIXME
             }
 
             virtual bool visit(uint64&)
             {
-                m_buf.out() << "inlib::rroot::member_reader::visit(uint64) :"
+                m_buf.out() << "inlib::root::member_reader::visit(uint64) :"
                             << " dummy." << std::endl;
                 return false; //FIXME
             }
@@ -109,7 +109,7 @@ namespace inlib {
             virtual bool visit(std::vector<int64>& /*a_v*/)
             {
                 //FIXME return ::Rio::writeArray<Slash::int64>(fBuffer,a_v);
-                m_buf.out() << "inlib::rroot::member_reader::visit(vector<int64>) :"
+                m_buf.out() << "inlib::root::member_reader::visit(vector<int64>) :"
                             << " dummy." << std::endl;
                 return false;
             }

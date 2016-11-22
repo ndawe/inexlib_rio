@@ -1,19 +1,15 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_itree
-#define inlib_wroot_itree
+#ifndef inlib_root_itree
+#define inlib_root_itree
 
 #include "../typedefs.h"
 
 namespace inlib {
-    namespace wroot {
-        class idir;
-    }
-}
+    namespace root {
 
-namespace inlib {
-    namespace wroot {
+        class idir;
 
         class itree {
         public:

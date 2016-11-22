@@ -1,15 +1,15 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_osc
-#define inlib_rroot_osc
+#ifndef inlib_root_osc
+#define inlib_root_osc
 
 #include "named.h"
 #include "member_reader.h"
 #include "../store/osc_streamers.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         template <class H>
         inline bool from_osc(buffer& a_buffer, const std::string& a_cls,

@@ -126,7 +126,7 @@ namespace inlib {
 
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::root::rbuf");
+                static const std::string s_v("inlib::root::buf");
                 return s_v;
             }
             typedef void (*r_2_func)(char*, char*);
@@ -721,7 +721,7 @@ namespace inlib {
             bool check_eob(uint32 n)
             {
                 if ((m_pos + n) > m_eob) {
-                    m_out << "inlib::rroot::rbuf::check_eob :"
+                    m_out << "inlib::rroot::buf::check_eob :"
                           << " try to access out of buffer " << n << " bytes."
                           << std::endl;
                     return false;
