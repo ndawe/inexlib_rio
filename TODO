@@ -1,19 +1,17 @@
-Merge the following between wroot and rroot:
-
-base_leaf.h
+>>DONE base_leaf.h
+>>DONE date.h
+>>DONE ifile.h
+>>DONE info.h
+>>DONE seek.h
+>>DONE streamers.h
 basket.h
 branch.h
 branch_element.h
 buffer.h
->>DONE date.h
 directory.h
 file.h
->>DONE ifile.h
-info.h
 key.h
 leaf.h
 named.h
 ntuple.h
->>DONE seek.h
->>DONE streamers.h
 tree.h

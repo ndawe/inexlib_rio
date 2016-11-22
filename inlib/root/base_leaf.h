@@ -1,8 +1,8 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_base_leaf
-#define inlib_rroot_base_leaf
+#ifndef inlib_root_base_leaf
+#define inlib_root_base_leaf
 
 #ifdef INLIB_MEM
     #include "../mem.h"
@@ -11,19 +11,19 @@
 #include "named.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
+
         class branch;
-    }
-}
 
-namespace inlib {
-    namespace rroot {
-
-        class base_leaf : public virtual iro {
+        class base_leaf : public virtual iro_ibo {
+            static unsigned int kNullTag()
+            {
+                return 0;
+            }
         public:
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::rroot::base_leaf");
+                static const std::string s_v("inlib::root::base_leaf");
                 return s_v;
             }
         public: //iro
@@ -48,8 +48,9 @@ namespace inlib {
                     return p;
                 } else return 0;
             }
+            virtual bool fill_basket(buffer&) const = 0;
         public:
-            virtual bool stream(buffer& a_buffer)
+            virtual bool stream_read(buffer& a_buffer)
             {
                 delete m_leaf_count;
                 m_leaf_count = 0;
@@ -82,24 +83,24 @@ namespace inlib {
                 {
                     ifac::args args;
                     args[ifac::arg_branch()] = &m_branch;
-                    iro* obj;
+                    iro_ibo* obj;
 
                     if (!a_buffer.read_object(m_fac, args, obj)) {
-                        m_out << "inlib::rroot::base_leaf::stream :"
+                        m_out << "inlib::root::base_leaf::stream :"
                               << " can't read object."
                               << std::endl;
                         return false;
                     }
 
                     if (!obj) {
-                        //m_out << "inlib::rroot::base_leaf::stream :"
+                        //m_out << "inlib::root::base_leaf::stream :"
                         //      << " null leaf count object."
                         //      << std::endl;
                     } else {
-                        m_leaf_count = safe_cast<iro, base_leaf>(*obj);
+                        m_leaf_count = safe_cast<iro_ibo, base_leaf>(*obj);
 
                         if (!m_leaf_count) {
-                            m_out << "inlib::rroot::base_leaf::stream :"
+                            m_out << "inlib::root::base_leaf::stream :"
                                   << " can't cast base_leaf."
                                   << std::endl;
                             m_leaf_count = 0;
@@ -119,12 +120,48 @@ namespace inlib {
                 */
                 return true;
             }
+
+            virtual bool stream_write(buffer& a_buffer) const
+            {
+                unsigned int c;
+
+                if (!a_buffer.write_version(2, c)) return false;
+
+                if (!Named_stream(a_buffer, m_name, m_title)) return false;
+
+                if (!a_buffer.write(m_length)) return false;
+
+                if (!a_buffer.write(m_length_type)) return false;
+
+                uint32 fOffset = 0;
+
+                if (!a_buffer.write(fOffset)) return false;
+
+                bool fIsRange = false;
+
+                if (!a_buffer.write(fIsRange)) return false;
+
+                bool fIsUnsigned = false;
+
+                if (!a_buffer.write(fIsUnsigned)) return false;
+
+                //if(!a_buffer.write_object(m_leaf_count)) return false;
+                if (!a_buffer.write(kNullTag())) return false;
+
+                if (!a_buffer.set_byte_count(c)) return false;
+
+                return true;
+            }
+
+
         public:
             virtual bool read_basket(buffer&) = 0;
             virtual bool print_value(std::ostream&, uint32) const = 0;
             virtual uint32 num_elem() const = 0;
         public:
-            base_leaf(std::ostream& a_out, rroot::branch& a_branch, ifac& a_fac)
+            base_leaf(std::ostream& a_out,
+                      root::branch& a_branch,
+                      ifac& a_fac)
                 : m_out(a_out)
                 , m_branch(a_branch)
                 , m_fac(a_fac)
@@ -147,6 +184,22 @@ namespace inlib {
                 mem::increment(s_class().c_str());
                 #endif
             }
+            base_leaf(std::ostream& a_out,
+                      root::branch& a_branch,
+                      const std::string& a_name,
+                      const std::string& a_title)
+                : m_out(a_out)
+                , m_branch(a_branch)
+                , m_name(a_name)
+                , m_title(a_title)
+
+                , m_length(0)
+                , m_length_type(0)
+            {
+                #ifdef INLIB_MEM
+                mem::increment(s_class().c_str());
+                #endif
+            }
             virtual ~base_leaf()
             {
                 delete m_leaf_count;
@@ -156,7 +209,7 @@ namespace inlib {
             }
         protected:
             base_leaf(const base_leaf& a_from)
-                : iro(a_from)
+                : iro_ibo(a_from)
                 , m_out(a_from.m_out)
                 , m_branch(a_from.m_branch)
                 , m_fac(a_from.m_fac)
@@ -164,12 +217,13 @@ namespace inlib {
                 , m_length(0)
                 , m_leaf_count(0)
             {}
+
             base_leaf& operator=(const base_leaf&)
             {
                 return *this;
             }
         public:
-            rroot::branch& branch()
+            root::branch& branch()
             {
                 return m_branch;
             }
@@ -185,14 +239,14 @@ namespace inlib {
               uint32 length() const {
                 // Return the number of effective elements of this leaf.
                 if(m_leaf_count) {
-                  m_out << "inlib::rroot::base_leaf::length :"
+                  m_out << "inlib::root::base_leaf::length :"
                         << " m_leaf_count not null. Case not yet handled."
                         << std::endl;
                   return m_length;
 
                   //uint32 len = m_leaf_count->number();
                   //if (len > fLeafCount->maximum()) {
-                  //  m_out << "inlib::rroot::base_leaf::length :"
+                  //  m_out << "inlib::root::base_leaf::length :"
                   //        << fName << ", len=" << len << " and max="
                   //        << fLeafCount->maximum()
                   //        << std::endl;
@@ -207,7 +261,7 @@ namespace inlib {
             */
         protected:
             std::ostream& m_out;
-            rroot::branch& m_branch;
+            root::branch& m_branch;
             ifac& m_fac;
         protected: //Named
             std::string m_name;
@@ -216,6 +270,7 @@ namespace inlib {
             //bool fNewValue;
             uint32 m_ndata;           //! Number of elements in fAddress data buffer
             uint32 m_length;          //  Number of fixed length elements
+            uint32 m_length_type;     //  Number of bytes for this data type
             /*
               int fLengthType;      //  Number of bytes for this data type
               int fOffset;          //  Offset in ClonesArray object (if one)
