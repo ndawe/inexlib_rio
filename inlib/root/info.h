@@ -1,17 +1,24 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_info
-#define inlib_rroot_info
+#ifndef inlib_root_info
+#define inlib_root_info
 
-//#include "buffer.h"
-//#include "element.h"
+#include "buffer.h"
+#include "element.h"
 #include "named.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
-        class streamer_element : public virtual iro {
+        // sizeof(vtbl)         = 4
+        // sizeof(unsigned int) = 4
+        // sizeof(TObject)   = 12  = 2 * (unsigned int) + vtbl.
+        // sizeof(TString)   = 8   = char* + vtbl.
+        // sizeof(TNamed)    = 28  = TObject + 2 * TString.
+        // sizeof(TObjArray) = 40
+
+        class streamer_element : public virtual iro_ibo {
             static const std::string& s_store_class()
             {
                 static const std::string s_v("TStreamerElement");
@@ -44,7 +51,7 @@ namespace inlib {
             {
                 return s_class();
             }
-            virtual iro* copy() const
+            virtual iro_ibo* copy() const
             {
                 return new streamer_element(*this);
             }
@@ -102,7 +109,7 @@ namespace inlib {
             }
         protected:
             streamer_element(const streamer_element& a_from)
-                : iro(a_from)
+                : iro_ibo(a_from)
                 , fName(a_from.fName), fTitle(a_from.fTitle)
                 , fType(a_from.fType), fSize(a_from.fSize)
                 , fArrayLength(a_from.fArrayLength)
@@ -158,7 +165,7 @@ namespace inlib {
         class dummy_streamer_element : public streamer_element {
             typedef streamer_element parent;
         public: //iro
-            virtual iro* copy() const
+            virtual iro_ibo* copy() const
             {
                 return new dummy_streamer_element(*this);
             }
@@ -183,7 +190,7 @@ namespace inlib {
             dummy_streamer_element() {}
             virtual ~dummy_streamer_element() {}
         protected:
-            dummy_streamer_element(const dummy_streamer_element& a_from): iro(a_from), parent(a_from) {}
+            dummy_streamer_element(const dummy_streamer_element& a_from): iro_ibo(a_from), parent(a_from) {}
             dummy_streamer_element& operator=(const dummy_streamer_element& a_from)
             {
                 parent::operator=(a_from);
@@ -191,7 +198,7 @@ namespace inlib {
             }
         };
 
-        class StreamerInfo : public virtual iro {
+        class StreamerInfo : public virtual iro_ibo {
             static const std::string& s_store_class()
             {
                 static const std::string s_v("TStreamerInfo");
@@ -200,13 +207,34 @@ namespace inlib {
         public:
             static const std::string& s_class()
             {
-                static const std::string s_v("inlib::rroot::StreamerInfo");
+                static const std::string s_v("inlib::root::StreamerInfo");
                 return s_v;
             }
             static cid id_class()
             {
                 return StreamerInfo_cid();
             }
+        public: //ibo
+            virtual bool stream_write(buffer& a_buffer) const
+            {
+                unsigned int c;
+
+                if (!a_buffer.write_version(2, c)) return false;
+
+                if (!Named_stream(a_buffer, fName, fTitle)) return false;
+
+                if (!a_buffer.write(fCheckSum)) return false;
+
+                if (!a_buffer.write(fStreamedClassVersion)) return false;
+
+                //ObjArray
+                if (!a_buffer.write_object(fElements)) return false;
+
+                if (!a_buffer.set_byte_count(c)) return false;
+
+                return true;
+            }
+
         public: //iro
             virtual void* cast(const std::string& a_class) const
             {
@@ -224,12 +252,12 @@ namespace inlib {
             {
                 return s_class();
             }
-            virtual iro* copy() const
+            virtual iro_ibo* copy() const
             {
                 return new StreamerInfo(*this);
             }
 
-            virtual bool stream(buffer& a_buffer)
+            virtual bool stream_read(buffer& a_buffer)
             {
                 short v;
                 unsigned int s, c;
@@ -281,6 +309,19 @@ namespace inlib {
                 mem::increment(s_class().c_str());
                 #endif
             }
+            StreamerInfo(const std::string& a_cls_store_name,
+                         int a_cls_vers,
+                         unsigned int a_cls_check_sum)
+                : m_name(a_cls_store_name)
+                , m_title("")
+                , m_check_sum(a_cls_check_sum)
+                , m_streamed_class_version(a_cls_vers)
+            {
+                #ifdef INLIB_MEM
+                mem::increment(s_class().c_str());
+                #endif
+            }
+
             virtual ~StreamerInfo()
             {
                 #ifdef INLIB_MEM
@@ -289,7 +330,7 @@ namespace inlib {
             }
         protected:
             StreamerInfo(const StreamerInfo& a_from)
-                : iro(a_from)
+                : iro_ibo(a_from)
                 , m_fac(a_from.m_fac)
                 , m_name(a_from.m_name)
                 , m_title(a_from.m_name)
@@ -301,6 +342,7 @@ namespace inlib {
                 mem::increment(s_class().c_str());
                 #endif
             }
+
             StreamerInfo& operator=(const StreamerInfo& a_from)
             {
                 m_name = a_from.m_name;
@@ -311,6 +353,10 @@ namespace inlib {
                 return *this;
             }
         public:
+            void add(streamer_element* a_elem)
+            {
+                fElements.push_back(a_elem);
+            }
         protected:
             ifac& m_fac;
         protected: //Named
@@ -321,6 +367,7 @@ namespace inlib {
             int m_streamed_class_version; //Class version identifier
             //int fNumber;               //!Unique identifier
             ObjArray<streamer_element> m_elements; //Array of TStreamerElements
+
         };
 
     }

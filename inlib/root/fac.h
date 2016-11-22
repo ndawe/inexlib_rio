@@ -24,7 +24,7 @@ namespace inlib {
                 return s_v;
             }
         public: //ifac
-            virtual iro* create(const std::string& a_class, const args& a_args)
+            virtual iro_ibo* create(const std::string& a_class, const args& a_args)
             {
                 //m_file.out() << "inlib::rroot::fac::create :"
                 //      << " create object of class " << a_class << "..."
@@ -126,7 +126,7 @@ namespace inlib {
                     return new dummy();
                 }
             }
-            virtual void destroy(iro*& a_obj)
+            virtual void destroy(iro_ibo*& a_obj)
             {
                 delete a_obj;
                 a_obj = 0;
