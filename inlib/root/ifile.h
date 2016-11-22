@@ -1,15 +1,16 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_ifile
-#define inlib_rroot_ifile
+#ifndef inlib_root_ifile
+#define inlib_root_ifile
 
 #include "seek.h"
 #include "../press_func.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
+        class buffer;
         class key;
 
         class ifile {
@@ -27,13 +28,34 @@ namespace inlib {
                 end
             };
             virtual bool set_pos(seek = 0, from = begin) = 0;
-            virtual bool read_buffer(char*, uint32) = 0;
 
+            virtual seek END() const = 0;
+            virtual void set_END(seek) = 0;
+
+            virtual bool read_buffer(char*, uint32) = 0;
+            virtual bool write_buffer(const char*, uint32) = 0;
+
+            virtual uint32 version() const = 0;
+
+            virtual bool synchronize() = 0;
+
+            virtual bool ziper(char, compress_func&) const = 0;
             virtual bool unziper(char, decompress_func&) const = 0;
+
+            virtual uint32 compression() const = 0;
+            virtual void compress_buffer(const buffer&, char*&, uint32&, bool&) = 0;
 
             virtual key& sinfos_key() = 0;
         };
 
+    }
+
+    namespace wroot {
+        using namespace root;
+    }
+
+    namespace rroot {
+        using namespace root;
     }
 }
 
