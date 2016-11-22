@@ -1,15 +1,14 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_wroot_directory
-#define inlib_wroot_directory
+#ifndef inlib_root_directory
+#define inlib_root_directory
 
-#include "idir.h"
-
-#include "inlib/root/date.h"
+#include "seek.h"
+#include "date.h"
 #include "key.h"
+#include "idir.h"
 #include "ifile.h"
-#include "inlib/root/date.h"
 #include "buffer.h"
 #include "iobject.h"
 
@@ -21,7 +20,7 @@
 #include <list>
 
 namespace inlib {
-    namespace wroot {
+    namespace root {
 
         class directory : public virtual idir {
             static uint32 class_version()
@@ -221,7 +220,7 @@ namespace inlib {
             }
             directory& operator=(const directory&)
             {
-                m_is_valid = false;
+                m_is_valid = false; // MERGE check this?
                 return *this;
             }
         public:
@@ -229,6 +228,12 @@ namespace inlib {
             {
                 return m_is_valid;
             }
+
+            ifile& file()
+            {
+                return m_file;
+            }
+
             void set_seek_directory(seek a_seek)
             {
                 m_seek_directory = a_seek;
@@ -269,22 +274,35 @@ namespace inlib {
             }
 
             //uint32 nbytes_name() const {return m_nbytes_name;}
+
+            uint32 nbytes_name() const
+            {
+                return m_nbytes_name;
+            }
+
             void set_nbytes_name(uint32 a_n)
             {
                 m_nbytes_name = a_n;
             }
 
-            uint32 record_size() const
+            uint32 record_size(uint32 a_version) const
             {
                 uint32 nbytes = sizeof(short);
                 nbytes += sizeof(date); //m_date_C.record_size();
                 nbytes += sizeof(date); //m_date_M.record_size();
                 nbytes += sizeof(m_nbytes_keys);
                 nbytes += sizeof(m_nbytes_name);
-                //ROOT version >= 40000:
-                nbytes += sizeof(seek);
-                nbytes += sizeof(seek);
-                nbytes += sizeof(seek);
+
+                if (a_version >= 40000) {
+                    nbytes += sizeof(seek);
+                    nbytes += sizeof(seek);
+                    nbytes += sizeof(seek);
+                } else {
+                    nbytes += sizeof(seek32);
+                    nbytes += sizeof(seek32);
+                    nbytes += sizeof(seek32);
+                }
+
                 return nbytes;
             }
 
@@ -295,6 +313,78 @@ namespace inlib {
                 clear_dirs();
                 clear_objs();
                 clear_keys();
+                return true;
+            }
+
+            bool from_buffer(const char* aEOB, char*& a_buffer)
+            {
+                // Decode input buffer.
+                // (Name, title) are stored in the (name, title) of the associated key.
+                rbuf rb(m_file.out(), m_file.byte_swap(), aEOB, a_buffer);
+                short versiondir;
+
+                if (!rb.read(versiondir)) return false;
+
+                unsigned int _date;
+
+                if (!rb.read(_date)) return false;
+
+                //fDateC.setDate(_date);
+                if (!rb.read(_date)) return false;
+
+                //fDateM.setDate(_date);
+                {
+                    int v;
+
+                    if (!rb.read(v)) return false;
+
+                    m_nbytes_keys = v;
+                }
+                {
+                    int v;
+
+                    if (!rb.read(v)) return false;
+
+                    m_nbytes_name = v;
+                }
+
+                if (versiondir > 1000) {
+                    if (!rb.read(m_seek_directory)) return false;
+
+                    if (!rb.read(m_seek_parent)) return false;
+
+                    if (!rb.read(m_seek_keys)) return false;
+                } else {
+                    {
+                        seek32 i;
+
+                        if (!rb.read(i)) return false;
+
+                        m_seek_directory = i;
+                    }
+                    {
+                        seek32 i;
+
+                        if (!rb.read(i)) return false;
+
+                        m_seek_parent = i;
+                    }
+                    {
+                        seek32 i;
+
+                        if (!rb.read(i)) return false;
+
+                        m_seek_keys = i;
+                    }
+                }
+
+                if (m_file.verbose()) {
+                    m_file.out() << "inlib::rroot::key::from_buffer :"
+                                 << " nbytes keys : " << m_nbytes_keys
+                                 << ", pos keys : " << m_seek_keys
+                                 << std::endl;
+                }
+
                 return true;
             }
 
@@ -409,6 +499,8 @@ namespace inlib {
                 }
 
                 m_keys.clear();
+
+                // MERGE: clear<key>(m_keys);
             }
 
             bool save()
@@ -442,6 +534,15 @@ namespace inlib {
             //const std::list<key*>& keys() const {return m_keys;}
             //std::list<key*>& keys() {return m_keys;}
 
+            const std::vector<key*>& keys() const
+            {
+                return m_keys;
+            }
+            std::vector<key*>& keys()
+            {
+                return m_keys;
+            }
+
             key* find_key(const std::string& a_name)
             {
                 if (m_file.verbose()) {
@@ -455,6 +556,21 @@ namespace inlib {
                 }
                 return 0;
             }
+
+            key* find_key_from_class(const std::string& a_class)
+            {
+                if (m_file.verbose()) {
+                    m_file.out() << "inlib::rroot::directory::find_key_from_class :"
+                                 << " " << sout(a_class) << " ..."
+                                 << std::endl;
+                }
+
+                inlib_vforcit(key*, m_keys, it) {
+                    if ((*it)->object_class() == a_class) return *it;
+                }
+                return 0;
+            }
+
             seek seek_keys() const
             {
                 return m_seek_keys;
@@ -471,6 +587,49 @@ namespace inlib {
                 // Not found :
                 m_keys.push_back(a_key);
                 return 1;
+            }
+
+            bool read_keys(uint32& a_number)
+            {
+                // Read the KEYS :
+                //  Every directory has a list (fKeys). This list has been
+                //  written on the file via CERN-ROOT::TDirectory::writeKeys
+                //  as a single data record.
+                a_number = 0;
+                clear_keys();
+                key headerkey(m_file, m_seek_keys, m_nbytes_keys);
+
+                if (!headerkey.read_file()) return false;
+
+                char* buffer = headerkey.data_buffer();
+
+                if (!headerkey.from_buffer(headerkey.eob(), buffer)) return false;
+
+                int nkeys = 0;
+                rbuf rb(m_file.out(), m_file.byte_swap(), headerkey.eob(), buffer);
+
+                if (!rb.read(nkeys)) return false;
+
+                if (m_file.verbose()) {
+                    m_file.out() << "inlib::rroot::directory::read_keys :"
+                                 << " nkeys " << nkeys
+                                 << "."
+                                 << std::endl;
+                }
+
+                for (int i = 0; i < nkeys; i++) {
+                    key* k = new key(m_file);
+
+                    if (!k->from_buffer(headerkey.eob(), buffer)) {
+                        delete k;
+                        return false;
+                    }
+
+                    m_keys.push_back(k);
+                }
+
+                a_number = nkeys;
+                return true;
             }
 
             bool write_keys()
@@ -646,7 +805,7 @@ namespace inlib {
             std::string m_title;
             std::vector<directory*> m_dirs;
             std::vector<iobject*> m_objs;
-            std::list<key*> m_keys;
+            std::list<key*> m_keys; // MERGE: or vector?
             // Record (stored in file):
             date m_date_C;           //Date and time when directory is created
             date m_date_M;           //Date and time of last modification
