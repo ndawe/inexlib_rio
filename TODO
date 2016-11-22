@@ -8,12 +8,12 @@ buffer.h
 >>DONE date.h
 directory.h
 file.h
-ifile.h
+>>DONE ifile.h
 info.h
 key.h
 leaf.h
 named.h
 ntuple.h
 >>DONE seek.h
-streamers.h
+>>DONE streamers.h
 tree.h
