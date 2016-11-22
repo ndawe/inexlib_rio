@@ -23,7 +23,8 @@ namespace inlib {
         public:
             virtual void* cast(const std::string&) const = 0; //for ObjArray
             virtual const std::string& store_cls() const = 0;
-            virtual bool stream(buffer&) const = 0;
+            virtual bool stream_read(buffer&) = 0;
+            virtual bool stream_write(buffer&) const = 0;
 
             virtual const std::string& s_cls() const = 0;
             virtual iro* copy() const = 0;
