@@ -6,9 +6,9 @@
 #include <inlib/mem.h>
 #include <inlib/args.h>
 #include <inlib/fileis.h>
-#include <inlib/rroot/file.h>
-#include <inlib/rroot/rall.h>
-#include <inlib/rroot/ntuple.h>
+#include <inlib/root/file.h>
+#include <inlib/root/rall.h>
+#include <inlib/root/ntuple.h>
 #include <inlib/ntuple_binding.h>
 #include <inlib/zlib.h>
 
@@ -41,7 +41,7 @@ int main(int argc, char** argv)
                 return EXIT_FAILURE;
             }
         }
-        inlib::rroot::file rfile(std::cout, file, verbose);
+        inlib::root::file rfile(std::cout, file, verbose);
         #ifdef EXLIB_DONT_HAVE_ZLIB
         #else
         rfile.add_unziper('Z', inlib::decompress_buffer);
@@ -51,20 +51,20 @@ int main(int argc, char** argv)
             std::cout << "format version " << rfile.version() << std::endl;
         }
 
-        const std::vector<inlib::rroot::key*>& keys = rfile.dir().keys();
-        inlib::rroot::read(std::cout, rfile, keys, true, ls, dump, 0);
+        const std::vector<inlib::root::key*>& keys = rfile.dir().keys();
+        inlib::root::read(std::cout, rfile, keys, true, ls, dump, 0);
         ///////////////////////////////////////////////////////////////
         /// if reading the wroot.root produced with wroot.cpp : ///////
         ///////////////////////////////////////////////////////////////
         {
-            inlib::rroot::TDirectory* dir = inlib::rroot::find_dir(rfile.dir(), "histo");
+            inlib::root::TDirectory* dir = inlib::root::find_dir(rfile.dir(), "histo");
 
             if (dir) {
                 {
-                    inlib::rroot::key* key = dir->find_key("rg");
+                    inlib::root::key* key = dir->find_key("rg");
 
                     if (key) {
-                        inlib::histo::h1d* h = inlib::rroot::key_to_h1d(*key);
+                        inlib::histo::h1d* h = inlib::root::key_to_h1d(*key);
 
                         if (h) {
                             std::cout << "h1d : " << h->title()
@@ -77,10 +77,10 @@ int main(int argc, char** argv)
                     }
                 }
                 {
-                    inlib::rroot::key* key = dir->find_key("rf");
+                    inlib::root::key* key = dir->find_key("rf");
 
                     if (key) {
-                        inlib::histo::h1d* h = inlib::rroot::key_to_h1d(*key);
+                        inlib::histo::h1d* h = inlib::root::key_to_h1d(*key);
 
                         if (h) {
                             std::cout << "h1d : " << h->title()
@@ -93,10 +93,10 @@ int main(int argc, char** argv)
                     }
                 }
                 {
-                    inlib::rroot::key* key = dir->find_key("rgbw");
+                    inlib::root::key* key = dir->find_key("rgbw");
 
                     if (key) {
-                        inlib::histo::h2d* h = inlib::rroot::key_to_h2d(*key);
+                        inlib::histo::h2d* h = inlib::root::key_to_h2d(*key);
 
                         if (h) {
                             std::cout << "h2d : " << h->title()
@@ -110,10 +110,10 @@ int main(int argc, char** argv)
                     }
                 }
                 {
-                    inlib::rroot::key* key = dir->find_key("prof");
+                    inlib::root::key* key = dir->find_key("prof");
 
                     if (key) {
-                        inlib::histo::p1d* h = inlib::rroot::key_to_p1d(*key);
+                        inlib::histo::p1d* h = inlib::root::key_to_p1d(*key);
 
                         if (h) {
                             std::cout << "p1d : " << h->title()
@@ -126,10 +126,10 @@ int main(int argc, char** argv)
                     }
                 }
                 {
-                    inlib::rroot::key* key = dir->find_key("prof2D");
+                    inlib::root::key* key = dir->find_key("prof2D");
 
                     if (key) {
-                        inlib::histo::p2d* h = inlib::rroot::key_to_p2d(*key);
+                        inlib::histo::p2d* h = inlib::root::key_to_p2d(*key);
 
                         if (h) {
                             std::cout << "p2d : " << h->title()
@@ -143,10 +143,10 @@ int main(int argc, char** argv)
                     }
                 }
                 {
-                    inlib::rroot::key* key = dir->find_key("rggbw");
+                    inlib::root::key* key = dir->find_key("rggbw");
 
                     if (key) {
-                        inlib::histo::h3d* h = inlib::rroot::key_to_h3d(*key);
+                        inlib::histo::h3d* h = inlib::root::key_to_h3d(*key);
 
                         if (h) {
                             std::cout << "h3d : " << h->title()
@@ -165,7 +165,7 @@ int main(int argc, char** argv)
         }
         // read an ntuple :
         {
-            inlib::rroot::key* key = rfile.dir().find_key("rg_rbw");
+            inlib::root::key* key = rfile.dir().find_key("rg_rbw");
 
             if (key) {
                 unsigned int sz;
@@ -176,9 +176,9 @@ int main(int argc, char** argv)
                     return EXIT_FAILURE;
                 }
 
-                inlib::rroot::buffer b(std::cout, rfile.byte_swap(), sz, buf, key->key_length(), verbose);
-                inlib::rroot::fac fac(rfile);
-                inlib::rroot::tree tree(rfile, fac);
+                inlib::root::buffer b(std::cout, rfile.byte_swap(), sz, buf, key->key_length(), verbose);
+                inlib::root::fac fac(rfile);
+                inlib::root::tree tree(rfile, fac);
 
                 if (!tree.stream(b)) {
                     std::cout << "TTree streaming failed." << std::endl;
@@ -197,7 +197,7 @@ int main(int argc, char** argv)
                 }
                 // read with the flat ntuple API :
                 {
-                    inlib::rroot::ntuple ntu(tree); //use the flat ntuple API.
+                    inlib::root::ntuple ntu(tree); //use the flat ntuple API.
                     inlib::ntuple_binding nbd;
                     double v_rgauss;
                     nbd.add_column("rgauss", v_rgauss);
@@ -234,10 +234,10 @@ int main(int argc, char** argv)
         /// if reading the pawdemo.root : /////////////////////////////
         ///////////////////////////////////////////////////////////////
         {
-            inlib::rroot::key* key = rfile.dir().find_key("h10");
+            inlib::root::key* key = rfile.dir().find_key("h10");
 
             if (key) {
-                inlib::histo::h1d* h = inlib::rroot::key_to_h1d(*key);
+                inlib::histo::h1d* h = inlib::root::key_to_h1d(*key);
 
                 if (h) {
                     std::cout << "h1d : h10"
@@ -253,10 +253,10 @@ int main(int argc, char** argv)
         /// if reading the prof.root produced with croot_TProfile.cpp : /////
         /////////////////////////////////////////////////////////////////////
         {
-            inlib::rroot::key* key = rfile.dir().find_key("prof");
+            inlib::root::key* key = rfile.dir().find_key("prof");
 
             if (key) {
-                inlib::histo::p1d* h = inlib::rroot::key_to_p1d(*key);
+                inlib::histo::p1d* h = inlib::root::key_to_p1d(*key);
 
                 if (h) {
                     std::cout << "p1d : prof"
@@ -269,10 +269,10 @@ int main(int argc, char** argv)
             }
         }
         {
-            inlib::rroot::key* key = rfile.dir().find_key("prof2D");
+            inlib::root::key* key = rfile.dir().find_key("prof2D");
 
             if (key) {
-                inlib::histo::p2d* h = inlib::rroot::key_to_p2d(*key);
+                inlib::histo::p2d* h = inlib::root::key_to_p2d(*key);
 
                 if (h) {
                     std::cout << "p2d : prof"

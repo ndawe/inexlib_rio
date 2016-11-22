@@ -8,9 +8,9 @@
 
 #include <inlib/mem.h>
 #include <inlib/args.h>
-#include <inlib/rroot/file.h>
-#include <inlib/rroot/streamers.h>
-#include <inlib/rroot/rall.h>
+#include <inlib/root/file.h>
+#include <inlib/root/streamers.h>
+#include <inlib/root/rall.h>
 #include <inlib/zlib.h>
 
 #include <iostream>
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
         }
 
         bool verbose = args.is_arg("-verbose");
-        inlib::rroot::file rfile(std::cout, file, verbose);
+        inlib::root::file rfile(std::cout, file, verbose);
         #ifdef EXLIB_DONT_HAVE_ZLIB
         #else
         rfile.add_unziper('Z', inlib::decompress_buffer);
@@ -41,7 +41,7 @@ int main(int argc, char** argv)
         args.find("-kbuf", kbuf, "");
 
         if (kbuf.size()) {
-            inlib::rroot::key* k = rfile.dir().find_key(kbuf);
+            inlib::root::key* k = rfile.dir().find_key(kbuf);
 
             if (!k) {
                 std::cout << kbuf << " not a key in file root directory." << std::endl;
@@ -58,14 +58,14 @@ int main(int argc, char** argv)
 
             std::cout << "size of decompressed data buffer " << sz << std::endl;
         } else {
-            const std::vector<inlib::rroot::key*>& keys = rfile.dir().keys();
-            inlib::rroot::dump(std::cout, rfile, keys, true, 0);
+            const std::vector<inlib::root::key*>& keys = rfile.dir().keys();
+            inlib::root::dump(std::cout, rfile, keys, true, 0);
             bool ls = args.is_arg("-ls");
             bool dump = args.is_arg("-dump");
 
-            if (ls || dump) inlib::rroot::read(std::cout, rfile, keys, true, ls, dump, 0);
+            if (ls || dump) inlib::root::read(std::cout, rfile, keys, true, ls, dump, 0);
 
-            if (sinfos) inlib::rroot::read_sinfos(rfile);
+            if (sinfos) inlib::root::read_sinfos(rfile);
         }
 
         #ifdef INLIB_MEM

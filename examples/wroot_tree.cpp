@@ -7,8 +7,8 @@
     #include <inlib/mem.h>
 #endif
 
-#include <inlib/wroot/file.h>
-#include <inlib/wroot/tree.h>
+#include <inlib/root/file.h>
+#include <inlib/root/tree.h>
 #include <inlib/randd.h>
 #include <inlib/randf.h>
 #include <inlib/zlib.h>
@@ -25,8 +25,8 @@ int main(int, char**)
         //////////////////////////////////////////////////////////
         /// create a .root file : ////////////////////////////////
         //////////////////////////////////////////////////////////
-        std::string file = "wroot_tree.root";
-        inlib::wroot::file rfile(std::cout, file);
+        std::string file = "root_tree.root";
+        inlib::root::file rfile(std::cout, file);
         rfile.add_ziper('Z', inlib::compress_buffer);
         rfile.set_compression(9);
         //////////////////////////////////////////////////////////
@@ -35,14 +35,14 @@ int main(int, char**)
         {
             //WARNING : the tree can't be on the stack. It is owned
             //          by the directory.
-            inlib::wroot::tree* tr =
-                new inlib::wroot::tree(rfile.dir(), "tree", "first tree");
-            inlib::wroot::branch* br = tr->create_branch("branch");
-            inlib::wroot::leaf<int>* leaf_index =
+            inlib::root::tree* tr =
+                new inlib::root::tree(rfile.dir(), "tree", "first tree");
+            inlib::root::branch* br = tr->create_branch("branch");
+            inlib::root::leaf<int>* leaf_index =
                 br->create_leaf<int>("index", "index");
-            inlib::wroot::leaf<double>* leaf_rgauss =
+            inlib::root::leaf<double>* leaf_rgauss =
                 br->create_leaf<double>("rgauss", "Random gaussian");
-            inlib::wroot::leaf<float>* leaf_rbw =
+            inlib::root::leaf<float>* leaf_rbw =
                 br->create_leaf<float>("rbw", "Random BW");
             inlib::rgaussd rg(1, 2);
             inlib::rbwf rbw(0, 1);

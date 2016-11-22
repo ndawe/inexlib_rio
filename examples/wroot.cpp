@@ -3,7 +3,7 @@
 
 //inlib_build_use inlib inlib zlib kernel
 
-//  This program produces a wroot.root file.
+//  This program produces a root.root file.
 //
 //  See rroot.C for an example of how to manipulate
 // (and check !) the content of this file with CERN-ROOT.
@@ -12,14 +12,14 @@
     #include <inlib/mem.h>
 #endif //INLIB_MEM
 
-#include <inlib/wroot/file.h>
-#include <inlib/wroot/to.h>
+#include <inlib/root/file.h>
+#include <inlib/root/to.h>
 #include <inlib/histo/h1d.h>
 #include <inlib/histo/h2d.h>
 #include <inlib/histo/h3d.h>
 #include <inlib/histo/p1d.h>
 #include <inlib/histo/p2d.h>
-#include <inlib/wroot/ntuple.h>
+#include <inlib/root/ntuple.h>
 #include <inlib/histo/h1df.h>
 #include <inlib/randd.h>
 #include <inlib/randf.h>
@@ -40,8 +40,8 @@ int main(int argc, char** argv)
         //////////////////////////////////////////////////////////
         /// create a .root file : ////////////////////////////////
         //////////////////////////////////////////////////////////
-        std::string file = "wroot.root";
-        inlib::wroot::file rfile(std::cout, file);
+        std::string file = "root.root";
+        inlib::root::file rfile(std::cout, file);
         #ifdef EXLIB_DONT_HAVE_ZLIB
         #else
 
@@ -53,14 +53,14 @@ int main(int argc, char** argv)
 
         #endif
         bool osc_stream = args.is_arg("-osc");
-        inlib::wroot::directory* dir = rfile.dir().mkdir("histo");
+        inlib::root::directory* dir = rfile.dir().mkdir("histo");
 
         if (!dir) {
             std::cout << "can't create diectory." << std::endl;
             return EXIT_FAILURE;
         }
 
-        //inlib::wroot::directory* dxxx = dir->mkdir("xxx");
+        //inlib::root::directory* dxxx = dir->mkdir("xxx");
         //if(!dxxx) {
         //  std::cout << "can't create diectory." << std::endl;
         //  return EXIT_FAILURE;
@@ -90,9 +90,9 @@ int main(int argc, char** argv)
 
             // write :
             if (osc_stream) {
-                if (!inlib::wroot::to_osc(*dir, h, "rg")) return EXIT_FAILURE;
+                if (!inlib::root::to_osc(*dir, h, "rg")) return EXIT_FAILURE;
             } else {
-                if (!inlib::wroot::to(*dir, h, "rg")) return EXIT_FAILURE;
+                if (!inlib::root::to(*dir, h, "rg")) return EXIT_FAILURE;
             }
         }
         {
@@ -114,7 +114,7 @@ int main(int argc, char** argv)
             }
 
             // write :
-            if (!inlib::wroot::to(*dir, h, "rf")) return EXIT_FAILURE;
+            if (!inlib::root::to(*dir, h, "rf")) return EXIT_FAILURE;
         }
         {
             inlib::histo::p1d h("Profile", 100, -5, 5, -2, 2);
@@ -131,9 +131,9 @@ int main(int argc, char** argv)
             }
 
             if (osc_stream) {
-                if (!inlib::wroot::to_osc(*dir, h, "prof")) return EXIT_FAILURE;
+                if (!inlib::root::to_osc(*dir, h, "prof")) return EXIT_FAILURE;
             } else {
-                if (!inlib::wroot::to(*dir, h, "prof")) return EXIT_FAILURE;
+                if (!inlib::root::to(*dir, h, "prof")) return EXIT_FAILURE;
             }
         }
         {
@@ -157,9 +157,9 @@ int main(int argc, char** argv)
 
             // write :
             if (osc_stream) {
-                if (!inlib::wroot::to_osc(*dir, h, "rgbw")) return EXIT_FAILURE;
+                if (!inlib::root::to_osc(*dir, h, "rgbw")) return EXIT_FAILURE;
             } else {
-                if (!inlib::wroot::to(*dir, h, "rgbw")) return EXIT_FAILURE;
+                if (!inlib::root::to(*dir, h, "rgbw")) return EXIT_FAILURE;
             }
         }
         {
@@ -178,9 +178,9 @@ int main(int argc, char** argv)
             }
 
             if (osc_stream) {
-                if (!inlib::wroot::to_osc(*dir, h, "prof2D")) return EXIT_FAILURE;
+                if (!inlib::root::to_osc(*dir, h, "prof2D")) return EXIT_FAILURE;
             } else {
-                if (!inlib::wroot::to(*dir, h, "prof2D")) return EXIT_FAILURE;
+                if (!inlib::root::to(*dir, h, "prof2D")) return EXIT_FAILURE;
             }
         }
         {
@@ -205,9 +205,9 @@ int main(int argc, char** argv)
 
             // write :
             if (osc_stream) {
-                if (!inlib::wroot::to_osc(*dir, h, "rggbw")) return EXIT_FAILURE;
+                if (!inlib::root::to_osc(*dir, h, "rggbw")) return EXIT_FAILURE;
             } else {
-                if (!inlib::wroot::to(*dir, h, "rggbw")) return EXIT_FAILURE;
+                if (!inlib::root::to(*dir, h, "rggbw")) return EXIT_FAILURE;
             }
         }
         //////////////////////////////////////////////////////////
@@ -216,11 +216,11 @@ int main(int argc, char** argv)
         {
             //WARNING : the ntuple can't be on the stack. It is owned
             //          by the directory.
-            inlib::wroot::ntuple* ntu = new inlib::wroot::ntuple(rfile.dir(), "rg_rbw", "Randoms");
-            inlib::wroot::ntuple::column<int>* col_index = ntu->create_column<int>("index");
-            inlib::wroot::ntuple::column<double>* col_rgauss = ntu->create_column<double>("rgauss");
-            inlib::wroot::ntuple::column<float>* col_rbw = ntu->create_column<float>("rbw");
-            inlib::wroot::ntuple::column_string* col_str = ntu->create_column_string("strings");
+            inlib::root::ntuple* ntu = new inlib::root::ntuple(rfile.dir(), "rg_rbw", "Randoms");
+            inlib::root::ntuple::column<int>* col_index = ntu->create_column<int>("index");
+            inlib::root::ntuple::column<double>* col_rgauss = ntu->create_column<double>("rgauss");
+            inlib::root::ntuple::column<float>* col_rbw = ntu->create_column<float>("rbw");
+            inlib::root::ntuple::column_string* col_str = ntu->create_column_string("strings");
             std::vector<float> user_vec_f;
             ntu->create_column<float>("vec_float", user_vec_f); //pass the ref of user_vec_f.
             std::vector<double> user_vec_d;
@@ -290,12 +290,12 @@ int main(int argc, char** argv)
             nbk.add_column<float>("rbw");
             nbk.add_column<std::string>("strings");
             //nbk.add_column<bool>("not_handled");
-            inlib::wroot::ntuple* ntu = new inlib::wroot::ntuple(rfile.dir(), nbk);
+            inlib::root::ntuple* ntu = new inlib::root::ntuple(rfile.dir(), nbk);
 
             if (ntu->columns().size()) {
-                inlib::wroot::ntuple::column<double>* col_rgauss = ntu->find_column<double>("rgauss");
-                inlib::wroot::ntuple::column<float>* col_rbw = ntu->find_column<float>("rbw");
-                inlib::wroot::ntuple::column_string* col_str = ntu->find_column_string("strings");
+                inlib::root::ntuple::column<double>* col_rgauss = ntu->find_column<double>("rgauss");
+                inlib::root::ntuple::column<float>* col_rbw = ntu->find_column<float>("rbw");
+                inlib::root::ntuple::column_string* col_str = ntu->find_column_string("strings");
                 inlib::rbwf rbwf(0, 1);
                 std::string stmp;
 
@@ -328,7 +328,7 @@ int main(int argc, char** argv)
         /// consistency check : create an empty ntuple : /////////
         //////////////////////////////////////////////////////////
         {
-            inlib::wroot::ntuple* ntu = new inlib::wroot::ntuple(rfile.dir(), "empty", "empty");
+            inlib::root::ntuple* ntu = new inlib::root::ntuple(rfile.dir(), "empty", "empty");
             ntu->create_column<int>("empty");
         }
         //////////////////////////////////////////////////////////
