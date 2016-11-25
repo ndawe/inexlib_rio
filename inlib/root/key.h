@@ -1,12 +1,12 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_key
-#define inlib_rroot_key
+#ifndef inlib_root_key
+#define inlib_root_key
 
-#include "rbuf.h"
-#include "inlib/root/seek.h"
-#include "inlib/root/date.h"
+#include "buf.h"
+#include "seek.h"
+#include "date.h"
 #include "ifile.h"
 #include "../sout.h"
 
@@ -32,12 +32,21 @@ extern "C" {
 #endif
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
         class key {
             static uint32 class_version()
             {
                 return 2;
+            }
+            static uint32 START_BIG_FILE()
+            {
+                return 2000000000;
+            }
+            static const std::string& s_class()
+            {
+                static const std::string s_v("inlib::wroot::key");
+                return s_v;
             }
         public:
             static uint32 std_string_record_size(const std::string& x)
@@ -107,6 +116,50 @@ namespace inlib {
                     m_buf_size = a_nbytes;
                 }
             }
+
+
+            key(ifile& a_file,
+                seek a_seek_parent_dir,
+                const std::string& a_object_name,
+                const std::string& a_object_title,
+                const std::string& a_object_class,
+                uint32 a_object_size) //uncompressed data size.
+                : m_file(a_file)
+                , m_buf_size(0)
+                , m_buffer(0)
+                  // Record :
+                , m_nbytes(0)
+                , m_version(class_version())
+                , m_object_size(a_object_size)
+                , m_date(0)
+                , m_key_length(0)
+                , m_cycle(0)
+                , m_seek_key(0)
+                , m_seek_parent_dir(0)
+                , m_object_class(a_object_class)
+                , m_object_name(a_object_name)
+                , m_object_title(a_object_title)
+            {
+                #ifdef INLIB_MEM
+                mem::increment(s_class().c_str());
+                #endif
+
+                if (a_object_size) {
+                    if (m_file.END() > START_BIG_FILE()) m_version += 1000;
+                }
+
+                if (m_version > 1000) {
+                } else {
+                    if (a_seek_parent_dir > START_BIG_FILE()) m_version += 1000;
+                }
+
+                m_key_length = record_size(m_version);
+                initialize(a_object_size);
+                m_seek_parent_dir = a_seek_parent_dir;
+            }
+
+
+
             virtual ~key()
             {
                 delete [] m_buffer;
@@ -185,6 +238,15 @@ namespace inlib {
             }
 
         public:
+            uint16 cycle() const
+            {
+                return m_cycle;
+            }
+            void set_cycle(uint16 a_cycle)
+            {
+                m_cycle = a_cycle;
+            }
+
             ifile& file()
             {
                 return m_file;
@@ -234,6 +296,41 @@ namespace inlib {
                 return true;
             }
 
+            bool write_self()
+            {
+                char* buffer = m_buffer;
+                wbuf wb(m_file.out(), m_file.byte_swap(), eob(), buffer);
+                return to_buffer(wb);
+            }
+
+            bool write_file(uint32& a_nbytes)
+            {
+                if (!m_file.set_pos(m_seek_key)) {
+                    a_nbytes = 0;
+                    return false;
+                }
+
+                if (!m_file.write_buffer(m_buffer, m_nbytes)) {
+                    a_nbytes = 0;
+                    return false;
+                }
+
+                if (m_file.verbose()) {
+                    m_file.out() << "inlib::wroot::key::write_file :"
+                                 << " writing " << m_nbytes << " bytes"
+                                 << " at address " << m_seek_key
+                                 << " for ID=" << sout(m_object_name)
+                                 << " Title=" << sout(m_object_title) << "."
+                                 << std::endl;
+                }
+
+                delete [] m_buffer; //???
+                m_buffer = 0;
+                m_buf_size = 0;
+                a_nbytes = m_nbytes;
+                return true;
+            }
+
             char* buf() const
             {
                 return m_buffer;
@@ -255,6 +352,37 @@ namespace inlib {
                 return m_key_length;
             }
 
+            void set_number_of_bytes(uint32 a_n)
+            {
+                m_nbytes = a_n;
+            }
+            uint32 number_of_bytes() const
+            {
+                return m_nbytes;
+            }
+
+            uint32 object_size() const
+            {
+                return m_object_size;
+            }
+
+            seek seek_key() const
+            {
+                return m_seek_key;
+            }
+            short key_length() const
+            {
+                return m_key_length;
+            }
+
+            char* data_buffer()
+            {
+                return m_buffer + m_key_length;
+            }
+            const char* eob() const
+            {
+                return m_buffer + m_buf_size;
+            }
             bool from_buffer(const char* aEOB, char*& a_pos)
             {
                 rbuf rb(m_file.out(), m_file.byte_swap(), aEOB, a_pos);
@@ -338,6 +466,70 @@ namespace inlib {
 
                 if (m_file.verbose()) {
                     m_file.out() << "inlib::rroot::key::from_buffer :"
+                                 << " nbytes : " << m_nbytes
+                                 << ", object class : " << sout(m_object_class)
+                                 << ", object name : " << sout(m_object_name)
+                                 << ", object title : " << sout(m_object_title)
+                                 << ", object size : " << m_object_size
+                                 << "."
+                                 << std::endl;
+                }
+
+                return true;
+            }
+
+            bool to_buffer(wbuf& a_wb) const
+            {
+                if (!a_wb.write(m_nbytes)) return false;
+
+                short version = m_version;
+
+                if (!a_wb.write(version)) return false;
+
+                if (!a_wb.write(m_object_size)) return false;
+
+                unsigned int _date = 0; //FIXME
+
+                if (!a_wb.write(_date)) return false;
+
+                if (!a_wb.write(m_key_length)) return false;
+
+                if (!a_wb.write(m_cycle)) return false;
+
+                if (version > 1000) {
+                    if (!a_wb.write(m_seek_key)) return false;
+
+                    if (!a_wb.write(m_seek_parent_dir)) return false;
+                } else {
+                    if (m_seek_key > START_BIG_FILE()) {
+                        m_file.out() << "inlib::wroot::key::to_buffer :"
+                                     << " attempt to write big seek "
+                                     << m_seek_key << " on 32 bits."
+                                     << std::endl;
+                        return false;
+                    }
+
+                    if (!a_wb.write((seek32)m_seek_key)) return false;
+
+                    if (m_seek_parent_dir > START_BIG_FILE()) {
+                        m_file.out() << "inlib::wroot::key::to_buffer :"
+                                     << " (2) attempt to write big seek "
+                                     << m_seek_parent_dir << " on 32 bits."
+                                     << std::endl;
+                        return false;
+                    }
+
+                    if (!a_wb.write((seek32)m_seek_parent_dir)) return false;
+                }
+
+                if (!a_wb.write(m_object_class)) return false;
+
+                if (!a_wb.write(m_object_name)) return false;
+
+                if (!a_wb.write(m_object_title)) return false;
+
+                if (m_file.verbose()) {
+                    m_file.out() << "inlib::wroot::key::to_buffer :"
                                  << " nbytes : " << m_nbytes
                                  << ", object class : " << sout(m_object_class)
                                  << ", object name : " << sout(m_object_name)
@@ -542,6 +734,29 @@ namespace inlib {
                 _nbytes += std_string_record_size(m_object_title);
                 //::printf("debug : record_size %d\n",_nbytes);
                 return _nbytes;
+            }
+
+            bool initialize(uint32 a_nbytes)
+            {
+                uint32 nsize = m_key_length + a_nbytes;
+                m_date = get_date();
+
+                if (a_nbytes) { //GB
+                    m_seek_key = m_file.END();
+                    m_file.set_END(m_seek_key + nsize);
+                    //NOTE : the free segment logic found in CERN-ROOT/TKey
+                    //       is not yet needed right now for us, since
+                    //       we always write at end of file. The update
+                    //       of the eof free_seg is done in set_END.
+                } else { //basket
+                    m_seek_key = 0;
+                }
+
+                delete [] m_buffer;
+                m_buffer = new char[nsize];
+                m_buf_size = nsize;
+                m_nbytes = nsize;
+                return true;
             }
 
             bool unzip(std::ostream& a_out, int a_srcsize, unsigned char* a_src, int a_tgtsize, unsigned char* a_tgt, int& a_irep)
