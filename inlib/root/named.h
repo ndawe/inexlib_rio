@@ -1,8 +1,8 @@
 // Copyright (C) 2010, Guy Barrand. All rights reserved.
 // See the file inlib.license for terms.
 
-#ifndef inlib_rroot_named
-#define inlib_rroot_named
+#ifndef inlib_root_named
+#define inlib_root_named
 
 #include "buffer.h"
 #include "../vdata.h"
@@ -13,9 +13,9 @@
 #include "cids.h"
 
 namespace inlib {
-    namespace rroot {
+    namespace root {
 
-        inline bool Object_stream(buffer& a_buffer, uint32& a_id, uint32& a_bits)
+        inline bool Object_stream_read(buffer& a_buffer, uint32& a_id, uint32& a_bits)
         {
             short v;
 
@@ -28,7 +28,21 @@ namespace inlib {
             return true;
         }
 
-        inline bool Named_stream(buffer& a_buffer,
+        inline bool Object_stream_write(buffer& a_buffer)
+        {
+            short v = 1;
+
+            if (!a_buffer.write_version(v)) return false;
+
+            if (!a_buffer.write((unsigned int)0)) return false;
+
+            static const unsigned int kNotDeleted = 0x02000000;
+
+            if (!a_buffer.write(kNotDeleted)) return false;
+
+            return true;
+        }
+        inline bool Named_stream_read(buffer& a_buffer,
                                  std::string& a_name,
                                  std::string& a_title)
         {
@@ -52,7 +66,25 @@ namespace inlib {
             return true;
         }
 
-        inline bool AttLine_stream(buffer& a_buffer,
+        inline bool Named_stream_write(buffer& a_buffer,
+                                 const std::string& a_name,
+                                 const std::string& a_title)
+        {
+            unsigned int beg;
+
+            if (!a_buffer.write_version(1, beg)) return false;
+
+            if (!Object_stream(a_buffer)) return false;
+
+            if (!a_buffer.write(a_name)) return false;
+
+            if (!a_buffer.write(a_title)) return false;
+
+            if (!a_buffer.set_byte_count(beg)) return false;
+
+            return true;
+        }
+        inline bool AttLine_stream_read(buffer& a_buffer,
                                    short& a_color,
                                    short& a_style,
                                    short& a_width)
@@ -73,7 +105,27 @@ namespace inlib {
             return true;
         }
 
-        inline bool AttFill_stream(buffer& a_buffer,
+        inline bool AttLine_stream_write(buffer& a_buffer)
+        {
+            short fLineColor = 1;
+            short fLineStyle = 1;
+            short fLineWidth = 1;
+            unsigned int c;
+
+            if (!a_buffer.write_version(1, c)) return false;
+
+            if (!a_buffer.write(fLineColor)) return false;
+
+            if (!a_buffer.write(fLineStyle)) return false;
+
+            if (!a_buffer.write(fLineWidth)) return false;
+
+            if (!a_buffer.set_byte_count(c)) return false;
+
+            return true;
+        }
+
+        inline bool AttFill_stream_read(buffer& a_buffer,
                                    short& a_color,
                                    short& a_style)
         {
@@ -91,7 +143,23 @@ namespace inlib {
             return true;
         }
 
-        inline bool AttMarker_stream(buffer& a_buffer)
+        inline bool AttFill_stream_write(buffer& a_buffer)
+        {
+            short fFillColor = 0;
+            short fFillStyle = 101;
+            unsigned int c;
+
+            if (!a_buffer.write_version(1, c)) return false;
+
+            if (!a_buffer.write(fFillColor)) return false;
+
+            if (!a_buffer.write(fFillStyle)) return false;
+
+            if (!a_buffer.set_byte_count(c)) return false;
+
+            return true;
+        }
+        inline bool AttMarker_stream_read(buffer& a_buffer)
         {
             short fMarkerColor;
             short fMarkerStyle;
@@ -112,7 +180,26 @@ namespace inlib {
             return true;
         }
 
-        inline bool GeoAtt_stream(buffer& a_buffer)
+        inline bool AttMarker_stream_write(buffer& a_buffer)
+        {
+            short fMarkerColor = 1;
+            short fMarkerStyle = 1;
+            float fMarkerWidth = 1;
+            unsigned int c;
+
+            if (!a_buffer.write_version(1, c)) return false;
+
+            if (!a_buffer.write(fMarkerColor)) return false;
+
+            if (!a_buffer.write(fMarkerStyle)) return false;
+
+            if (!a_buffer.write(fMarkerWidth)) return false;
+
+            if (!a_buffer.set_byte_count(c)) return false;
+
+            return true;
+        }
+        inline bool GeoAtt_stream_read(buffer& a_buffer)
         {
             unsigned int fGeoAtt;            // option flags
             short v;
@@ -127,7 +214,7 @@ namespace inlib {
             return true;
         }
 
-        inline bool Att3D_stream(buffer& a_buffer)
+        inline bool Att3D_stream_read(buffer& a_buffer)
         {
             short v;
             unsigned int s, c;
@@ -139,8 +226,19 @@ namespace inlib {
             return true;
         }
 
+        inline bool Att3D_stream_write(buffer& a_buffer)
+        {
+            unsigned int c;
+
+            if (!a_buffer.write_version(1, c)) return false;
+
+            if (!a_buffer.set_byte_count(c)) return false;
+
+            return true;
+        }
+
         template <class T>
-        inline bool Array_stream(buffer& a_buffer, std::vector<T>& a_v)
+        inline bool Array_stream_read(buffer& a_buffer, std::vector<T>& a_v)
         {
             a_v.clear();
             int sz;
@@ -157,8 +255,15 @@ namespace inlib {
             return true;
         }
 
+        //template <class T>
+        //inline bool Array_stream_write(buffer& a_buffer,const std::vector<T>& a_v) {
+        //  if(!a_buffer.write((int)a_v.size())) return false;
+        //  if(!a_buffer.write_fast_array(vec_data(a_v),a_v.size())) return false;
+        //  return true;
+        //}
+
         template <class T>
-        inline bool dummy_array_stream(buffer& a_buffer, int a_n)
+        inline bool dummy_array_stream_read(buffer& a_buffer, int a_n)
         {
             char is_array;
 
@@ -175,7 +280,7 @@ namespace inlib {
         }
 
         template <class T>
-        inline bool fixed_array_stream(buffer& a_buffer, int a_n, T*& a_v)
+        inline bool fixed_array_stream_read(buffer& a_buffer, int a_n, T*& a_v)
         {
             delete [] a_v;
             a_v = 0;
@@ -198,7 +303,7 @@ namespace inlib {
             return true;
         }
 
-        class iros : public virtual iro, public std::vector<iro*> {
+        class iros : public virtual iro_ibo, public std::vector<iro*> {
             static const std::string& s_store_class()
             {
                 static const std::string s_v("TObjArray");
@@ -304,7 +409,7 @@ namespace inlib {
                 }
             }
         public:
-            bool stream(buffer& a_buffer,
+            bool stream_read(buffer& a_buffer,
                         const ifac::args& a_args, bool a_accept_null = false)
             {
                 _clear();
@@ -371,16 +476,25 @@ namespace inlib {
         };
 
         template <class T>
-        class ObjArray : public virtual iro, public std::vector<T*> {
+        class ObjArray : public virtual iro_ibo, public std::vector<T*> {
             static const std::string& s_store_class()
             {
                 static const std::string s_v("TObjArray");
                 return s_v;
             }
+            static unsigned int kNullTag()
+            {
+                return 0;
+            }
         public:
             static const std::string& s_class()
             {
                 static const std::string s_v("inlib::rroot::ObjArray<" + T::s_class() + ">");
+                return s_v;
+            }
+            virtual const std::string& store_cls() const
+            {
+                static const std::string s_v("TObjArray");
                 return s_v;
             }
         public: //iro
@@ -411,11 +525,44 @@ namespace inlib {
             {
                 return new ObjArray<T>(*this);
             }
-            virtual bool stream(buffer& a_buffer)
+            virtual bool stream_read(buffer& a_buffer)
             {
                 ifac::args args;
                 bool accept_null = false;
-                return stream(a_buffer, args, accept_null);
+                return stream_read(a_buffer, args, accept_null);
+            }
+            virtual bool stream_write(buffer& a_buffer) const
+            {
+                unsigned int c;
+
+                if (!a_buffer.write_version(3, c)) return false;
+
+                if (!Object_stream(a_buffer)) return false;
+
+                if (!a_buffer.write(std::string(""))) return false;
+
+                int nobjects = std::vector<T*>::size();
+
+                if (!a_buffer.write(nobjects)) return false;
+
+                int lowerBound = 0;
+
+                if (!a_buffer.write(lowerBound)) return false;
+
+                typedef typename std::vector<T*>::const_iterator it_t;
+                it_t it;
+
+                for (it = std::vector<T*>::begin(); it != std::vector<T*>::end(); ++it) {
+                    if (*it) {
+                        if (!a_buffer.write_object(*(*it))) return false;
+                    } else { //Could happen with branch::m_baskets.
+                        if (!a_buffer.write(kNullTag())) return false;
+                    }
+                }
+
+                if (!a_buffer.set_byte_count(c)) return false;
+
+                return true;
             }
         public:
             ObjArray(ifac& a_fac, bool a_owner)
@@ -429,13 +576,14 @@ namespace inlib {
             virtual ~ObjArray()
             {
                 _clear();
+                // MERGE? inlib::clear<T>(*this);
                 #ifdef INLIB_MEM
                 mem::decrement(s_class().c_str());
                 #endif
             }
         public:
             ObjArray(const ObjArray& a_from)
-                : iro(a_from)
+                : iro_ibo(a_from)
                 , std::vector<T * >()
                 , m_fac(a_from.m_fac)
                 , m_owner(a_from.m_owner)
@@ -501,13 +649,40 @@ namespace inlib {
 
                 return *this;
             }
+
+            /* MERGE
+            ObjArray(const ObjArray& a_from):
+                ibo(a_from), std::vector<T * >()
+            {
+                typedef typename std::vector<T*>::const_iterator it_t;
+                it_t it;
+
+                for (it = a_from.begin(); it != a_from.end(); ++it) {
+                    std::vector<T*>::push_back((*it)->copy());
+                }
+            }
+            ObjArray& operator=(const ObjArray& a_from)
+            {
+                if (&a_from == this) return *this;
+
+                inlib::clear<T>(*this);
+                typedef typename std::vector<T*>::const_iterator it_t;
+                it_t it;
+
+                for (it = a_from.begin(); it != a_from.end(); ++it) {
+                    std::vector<T*>::push_back((*it)->copy());
+                }
+
+                return *this;
+            }
+            */
         public:
             void cleanup()
             {
                 _clear();
             }
         public:
-            bool stream(buffer& a_buffer, const ifac::args& a_args, bool a_accept_null = false)
+            bool stream_read(buffer& a_buffer, const ifac::args& a_args, bool a_accept_null = false)
             {
                 _clear();
                 short v;
@@ -582,13 +757,19 @@ namespace inlib {
             bool m_owner;
         };
 
-        class List : public virtual iro, public std::vector<iro*> {
+        class List : public virtual iro_ibo, public std::vector<iro*> {
             static const std::string& s_store_class()
             {
                 static const std::string s_v("TList");
                 return s_v;
             }
         public:
+            virtual const std::string& store_cls() const
+            {
+                static const std::string s_v("TList");
+                return s_v;
+            }
+
             static const std::string& s_class()
             {
                 static const std::string s_v("inlib::rroot::List");
@@ -622,7 +803,7 @@ namespace inlib {
             {
                 return new List(*this);
             }
-            virtual bool stream(buffer& a_buffer)
+            virtual bool stream_read(buffer& a_buffer)
             {
                 _clear();
                 short v;
@@ -676,6 +857,39 @@ namespace inlib {
 
                 return a_buffer.check_byte_count(s, c, s_store_class());
             }
+
+            virtual bool stream_write(buffer& a_buffer) const
+            {
+                unsigned int c;
+
+                if (!a_buffer.write_version(4, c)) return false;
+
+                if (!Object_stream(a_buffer)) return false;
+
+                if (!a_buffer.write(std::string(""))) return false; //fName
+
+                int nobjects = std::vector<T*>::size();
+
+                if (!a_buffer.write(nobjects)) return false;
+
+                typedef typename std::vector<T*>::const_iterator it_t;
+                it_t it;
+
+                for (it = std::vector<T*>::begin(); it != std::vector<T*>::end(); ++it) {
+                    if (!a_buffer.write_object(*(*it))) return false;
+
+                    std::string opt;
+                    unsigned char nch = opt.size();
+
+                    if (!a_buffer.write(nch)) return false;
+
+                    if (!a_buffer.write_fast_array<char>(opt.c_str(), nch)) return false;
+                }
+
+                if (!a_buffer.set_byte_count(c)) return false;
+
+                return true;
+            }
         public:
             List(ifac& a_fac, bool a_owner)
                 : m_fac(a_fac)
@@ -688,13 +902,14 @@ namespace inlib {
             virtual ~List()
             {
                 _clear();
+                // MERGE? inlib::clear<T>(*this);
                 #ifdef INLIB_MEM
                 mem::decrement(s_class().c_str());
                 #endif
             }
         protected:
             List(const List& a_from)
-                : iro(a_from)
+                : iro_ibo(a_from)
                 , std::vector<iro * >()
                 , m_fac(a_from.m_fac)
                 , m_owner(a_from.m_owner)
