@@ -499,7 +499,6 @@ namespace inlib {
                 }
 
                 m_keys.clear();
-
                 // MERGE: clear<key>(m_keys);
             }
 

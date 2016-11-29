@@ -878,8 +878,8 @@ namespace inlib {
         }
 
         inline bool TH1F_stream_write(buffer& a_buffer,
-                                const histo::h1df& a_h,
-                                const std::string& a_name)
+                                      const histo::h1df& a_h,
+                                      const std::string& a_name)
         {
             if (!a_buffer.write_version(1)) return false;
 
@@ -891,8 +891,8 @@ namespace inlib {
         }
 
         inline bool TH1F_stream_write(buffer& a_buffer,
-                                const histo::h1d& a_h,
-                                const std::string& a_name)
+                                      const histo::h1d& a_h,
+                                      const std::string& a_name)
         {
             if (!a_buffer.write_version(1)) return false;
 
@@ -958,8 +958,8 @@ namespace inlib {
         }
 
         inline bool TH1D_stream_write(buffer& a_buffer,
-                                const histo::h1d& a_h,
-                                const std::string& a_name)
+                                      const histo::h1d& a_h,
+                                      const std::string& a_name)
         {
             if (!a_buffer.write_version(1)) return false;
 
@@ -1038,8 +1038,8 @@ namespace inlib {
         }
 
         inline bool TH2F_stream_write(buffer& a_buffer,
-                                const histo::h2d& a_h,
-                                const std::string& a_name)
+                                      const histo::h2d& a_h,
+                                      const std::string& a_name)
         {
             if (!a_buffer.write_version(3)) return false;
 
@@ -1051,8 +1051,8 @@ namespace inlib {
         }
 
         inline bool TH2F_stream_write(buffer& a_buffer,
-                                const histo::h2df& a_h,
-                                const std::string& a_name)
+                                      const histo::h2df& a_h,
+                                      const std::string& a_name)
         {
             if (!a_buffer.write_version(3)) return false;
 
@@ -1125,8 +1125,8 @@ namespace inlib {
         }
 
         inline bool TH2D_stream_write(buffer& a_buffer,
-                                const histo::h2d& a_h,
-                                const std::string& a_name)
+                                      const histo::h2d& a_h,
+                                      const std::string& a_name)
         {
             if (!a_buffer.write_version(3)) return false;
 

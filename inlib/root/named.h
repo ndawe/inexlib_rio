@@ -43,8 +43,8 @@ namespace inlib {
             return true;
         }
         inline bool Named_stream_read(buffer& a_buffer,
-                                 std::string& a_name,
-                                 std::string& a_title)
+                                      std::string& a_name,
+                                      std::string& a_title)
         {
             short v;
             unsigned int s, c;
@@ -67,8 +67,8 @@ namespace inlib {
         }
 
         inline bool Named_stream_write(buffer& a_buffer,
-                                 const std::string& a_name,
-                                 const std::string& a_title)
+                                       const std::string& a_name,
+                                       const std::string& a_title)
         {
             unsigned int beg;
 
@@ -85,9 +85,9 @@ namespace inlib {
             return true;
         }
         inline bool AttLine_stream_read(buffer& a_buffer,
-                                   short& a_color,
-                                   short& a_style,
-                                   short& a_width)
+                                        short& a_color,
+                                        short& a_style,
+                                        short& a_width)
         {
             short v;
             unsigned int s, c;
@@ -126,8 +126,8 @@ namespace inlib {
         }
 
         inline bool AttFill_stream_read(buffer& a_buffer,
-                                   short& a_color,
-                                   short& a_style)
+                                        short& a_color,
+                                        short& a_style)
         {
             short v;
             unsigned int s, c;
@@ -410,7 +410,7 @@ namespace inlib {
             }
         public:
             bool stream_read(buffer& a_buffer,
-                        const ifac::args& a_args, bool a_accept_null = false)
+                             const ifac::args& a_args, bool a_accept_null = false)
             {
                 _clear();
                 short v;

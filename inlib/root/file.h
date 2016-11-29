@@ -542,7 +542,6 @@ namespace inlib {
             {
                 if (m_file == not_open()) return;
 
-
                 if (m_free_segs.size()) {
                     if (!write_free_segments()) {
                         m_out << "inlib::root::file::close :"
@@ -1117,10 +1116,10 @@ namespace inlib {
 
                 uint32 nbytes = bref.length();
                 root::key key(*this,
-                               m_root_directory.seek_directory(),
-                               "StreamerInfo", "",
-                               sinfos.store_cls(),
-                               nbytes); //set m_END
+                              m_root_directory.seek_directory(),
+                              "StreamerInfo", "",
+                              sinfos.store_cls(),
+                              nbytes); //set m_END
 
                 if (!key.seek_key()) return false;
 
@@ -1228,9 +1227,9 @@ namespace inlib {
                 if (!nbytes) return true;
 
                 root::key key(*this,
-                               m_root_directory.seek_directory(),
-                               m_path, m_title, "TFile",
-                               nbytes); //set m_END
+                              m_root_directory.seek_directory(),
+                              m_path, m_title, "TFile",
+                              nbytes); //set m_END
 
                 if (!key.seek_key()) return false;
 
